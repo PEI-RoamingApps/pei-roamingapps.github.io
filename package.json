@@ -23,7 +23,7 @@
     "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "astro": "^7.3.3",
+    "astro": "^7.3.5",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "tailwindcss": "^4.3.3"
@@ -36,9 +36,9 @@
     "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.63.0",
     "@types/node": "^26.6.2",
-    "sass": "^1.104.1",
+    "sass": "^1.105.0",
     "serve": "^14.2.6",
     "typescript": "^6.0.3",
-    "vitest": "^5.0.1"
+    "vitest": "^5.0.2"
   }
 }
