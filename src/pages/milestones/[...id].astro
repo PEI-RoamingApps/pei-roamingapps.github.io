@@ -25,7 +25,7 @@ const resourceGroups = [
 <BaseLayout title={`Phase ${String(number).padStart(2,'0')} — ${title}`} description={summary}>
   <header class="border-b border-line py-12 md:py-18">
     <div class="shell">
-      <a href={url('/milestones')} class="axis-link meta meta-on">← Milestones</a>
+      <a href={url('/milestones')} class="text-link meta meta-on">← Milestones</a>
       <div class="mt-8 flex flex-wrap items-center gap-5"><p class="meta text-signal">Phase {String(number).padStart(2,'0')}</p><StatusDot status={status} /></div>
       <h1 data-reveal class="mt-4 max-w-5xl font-display font-semibold tracking-[-0.055em]" style="font-size:var(--text-title);line-height:.96">{title}</h1>
       <p class="mt-6 max-w-3xl text-lg leading-relaxed text-text-soft">{summary}</p>
@@ -39,7 +39,7 @@ const resourceGroups = [
           <p class="meta text-signal">Presentation</p>
           <h2 id="milestone-presentation" class="mt-2 font-display text-2xl font-semibold tracking-[-0.03em]">{canvaPresentation.title}</h2>
         </div>
-        <a href={canvaPresentation.embedUrl} target="_blank" rel="noopener noreferrer" class="axis-link meta meta-on">Open in Canva ↗</a>
+        <a href={canvaPresentation.embedUrl} target="_blank" rel="noopener noreferrer" class="text-link meta meta-on">Open in Canva ↗</a>
       </div>
       <div class="canva-frame border border-line bg-surface">
         <iframe
@@ -70,21 +70,21 @@ const resourceGroups = [
           </ol>
 
           {resourceGroups.map((group) => <div class="mt-8"><p class="meta">{group.label}</p><div class="mt-3 border-t border-line">{group.items.map((item) =>
-            <a href={item.href} class="axis-link flex justify-between gap-4 border-b border-line py-3 text-sm"><span>{item.title}</span><span class="meta">Open ↗</span></a>
+            <a href={item.href} class="text-link flex justify-between gap-4 border-b border-line py-3 text-sm"><span>{item.title}</span><span class="meta">Open ↗</span></a>
           )}</div></div>)}
         </div>
       </aside>
 
       <div class="min-w-0 lg:col-start-1 lg:row-start-1">
         <p class="meta text-signal">Focus</p>
-        <div class="prose-alinha mt-5 max-w-3xl text-base leading-[1.7] text-text-soft"><Content /></div>
+        <div class="prose-content mt-5 max-w-3xl text-base leading-[1.7] text-text-soft"><Content /></div>
       </div>
     </div>
   </section>
 
   <nav aria-label="Milestone navigation" class="shell grid grid-cols-2 gap-8 border-t border-line py-10">
-    <div>{previous && <a href={url(`/milestones/${previous.id}`)} class="axis-link text-sm">← {previous.data.title}</a>}</div>
-    <div class="text-right">{next && <a href={url(`/milestones/${next.id}`)} class="axis-link text-sm">{next.data.title} →</a>}</div>
+    <div>{previous && <a href={url(`/milestones/${previous.id}`)} class="text-link text-sm">← {previous.data.title}</a>}</div>
+    <div class="text-right">{next && <a href={url(`/milestones/${next.id}`)} class="text-link text-sm">{next.data.title} →</a>}</div>
   </nav>
 </BaseLayout>
 

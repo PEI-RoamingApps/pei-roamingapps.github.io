@@ -1,40 +1,54 @@
 ---
 import LinkArrow from '../ui/LinkArrow.astro';
-import AlignmentField from '../brand/AlignmentField.astro';
 import { url } from '../../lib/paths';
 
-const frameworks = ['GSMA', 'IPCEI-CIS', 'ETSI'];
+const features = [
+  {
+    title: 'Edge Placement',
+    description: 'Place application workloads close to users for low-latency, location-aware services.',
+    badge: 'KUBERNETES · EDGE',
+  },
+  {
+    title: 'GSMA EWBI Interface',
+    description: 'Discover services and coordinate transparent hand-over through a standard operator interface.',
+    badge: 'GSMA OPG.02',
+  },
+  {
+    title: 'Multi-Operator Federation',
+    description: 'Connect independent telecom platforms while each operator keeps control of its infrastructure.',
+    badge: 'IPCEI-CIS · ICRA',
+  },
+];
 ---
-<section aria-labelledby="intro-heading" class="hero shell grid min-h-[620px] items-center gap-14 py-14 md:grid-cols-[minmax(0,1.02fr)_minmax(340px,.98fr)] md:gap-[7vw] md:py-20">
-  <div>
-    <p class="meta text-signal">Roaming for Applications · PEI 2026/27</p>
-    <h1 id="intro-heading" data-reveal class="mt-4 max-w-4xl font-display font-semibold tracking-[-0.065em]" style="font-size:var(--text-hero);line-height:.9">
-      Federated<br /><span class="text-brand">edge roaming.</span>
+<section aria-labelledby="intro-heading" class="hero shell py-20 md:py-28">
+  <div class="mx-auto max-w-5xl text-center">
+    <p class="meta inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/5 px-4 py-2 text-brand">
+      <span class="size-1.5 rounded-full bg-brand" aria-hidden="true"></span>
+      PEI 2026/27 · Edge platform federation
+    </p>
+    <h1 id="intro-heading" data-reveal class="mx-auto mt-8 max-w-5xl font-display font-semibold tracking-[-0.055em]" style="font-size:var(--text-hero);line-height:.98">
+      Federating Platforms <span class="text-brand">Across Operators</span>
     </h1>
-    <p class="mt-8 max-w-2xl leading-[1.6] text-text-soft" style="font-size:var(--text-lead)" data-reveal>
-      Federating edge platforms across telecom operators, based on GSMA and IPCEI-CIS.
+    <p class="mx-auto mt-7 max-w-3xl leading-[1.7] text-text-soft" style="font-size:var(--text-lead)" data-reveal>
+      A cloud-native approach to application roaming: federate telecom edge platforms through the IPCEI-CIS ICRA architecture and the GSMA East-West Bound Interface (EWBI).
     </p>
 
-    <div class="mt-8 flex flex-wrap gap-x-9 gap-y-4">
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
       <LinkArrow href={url('/project')}>Discover the project</LinkArrow>
       <LinkArrow href={url('/documentation')}>Documentation</LinkArrow>
     </div>
-
-    <ul class="mt-9 flex flex-wrap gap-x-6 gap-y-2" aria-label="Frameworks and references">
-      {frameworks.map((name) => <li class="meta meta-on">{name}</li>)}
-    </ul>
   </div>
 
-  <div class="hero-visual relative min-h-[330px] overflow-hidden bg-brand md:min-h-[390px]" aria-hidden="true">
-    <p class="meta absolute left-7 top-7 z-10 text-white/60">Independent platforms → federated roaming</p>
-    <div class="absolute inset-x-5 top-16 md:inset-x-8 md:top-14">
-      <AlignmentField variant="hero" class="h-full w-full [--color-brand:#FFFFFF] [--color-text:#FFFFFF] [--color-signal:var(--color-signal)]" />
-    </div>
+  <div class="mx-auto mt-16 grid max-w-6xl gap-4 md:grid-cols-3 md:gap-5" aria-label="Project capabilities">
+    {features.map((feature, index) => (
+      <article data-reveal class="glass-card group min-h-56 rounded-2xl p-6 text-left transition duration-300 hover:-translate-y-1 hover:border-brand/40 md:p-7">
+        <div class="flex items-center justify-between gap-3">
+          <span class="font-mono text-xs text-muted">0{index + 1}</span>
+          <span class="rounded-full border border-line/80 bg-background/70 px-2.5 py-1 font-mono text-[0.625rem] tracking-[.08em] text-brand">{feature.badge}</span>
+        </div>
+        <h2 class="mt-9 font-display text-xl font-semibold tracking-[-0.025em]">{feature.title}</h2>
+        <p class="mt-3 text-sm leading-relaxed text-text-soft">{feature.description}</p>
+      </article>
+    ))}
   </div>
 </section>
-
-<style>
-  .hero { position:relative; }
-  .hero-visual { background:linear-gradient(145deg,var(--color-brand-deep),var(--color-brand) 55%,var(--color-signal)); box-shadow:18px 18px 0 var(--color-silver-soft); }
-  .hero-visual::after { content:''; position:absolute; width:15rem; height:1px; right:-3rem; bottom:3rem; background:rgb(255 255 255 / .4); transform:rotate(-18deg); }
-</style>

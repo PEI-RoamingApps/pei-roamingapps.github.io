@@ -5,7 +5,7 @@ import PageHeader from '../../components/global/PageHeader.astro';
 import LogRow from '../../components/minutes/LogRow.astro';
 const minutes = (await getCollection('minutes')).sort((a,b) => b.data.index - a.data.index);
 ---
-<BaseLayout title="Minutes" description="Meeting notes and project decisions for aLinha.">
+<BaseLayout title="Minutes" description="Meeting notes and project decisions for Roaming for Applications.">
   <PageHeader label="Meeting record" title="Minutes" lead="Meeting notes and decisions. An entry can be available online, as PDF, or both." />
   <section class="py-[var(--space-section)]">
     <div class="shell">

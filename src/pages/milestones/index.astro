@@ -5,7 +5,7 @@ import PageHeader from '../../components/global/PageHeader.astro';
 import MilestoneRow from '../../components/milestones/MilestonesRow.astro';
 const milestones = (await getCollection('milestones')).sort((a,b) => a.data.number - b.data.number);
 ---
-<BaseLayout title="Milestones" description="Published milestones for the aLinha project.">
+<BaseLayout title="Milestones" description="Published milestones for the Roaming for Applications project.">
   <PageHeader label="Project progress" title="Milestones" lead="Milestones and deliverables confirmed by the project team." />
   <section class="py-[var(--space-section)]">
     <div class="shell">

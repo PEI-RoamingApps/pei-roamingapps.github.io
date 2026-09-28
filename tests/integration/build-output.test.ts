@@ -63,7 +63,7 @@ describe('production build', () => {
     const html = readFileSync(file, 'utf8');
     expect(html).toMatch(/<title>[^<]+<\/title>/);
     expect(html).toMatch(/<meta name="description" content="[^"]+">/);
-    expect(html).toMatch(/<link rel="canonical" href="https:\/\/pei-alinha\.github\.io\//);
+    expect(html).toMatch(/<link rel="canonical" href="https:\/\/pei-roamingapps\.github\.io\//);
     expect(html.match(/<h1\b/g)).toHaveLength(1);
   });
 

@@ -2,8 +2,8 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 const primaryPages = [
-  ['/', 'aLinha'],
-  ['/project', 'What is aLinha?'],
+  ['/', 'Roaming for Applications'],
+  ['/project', 'Roaming for Applications'],
   ['/minutes', 'Minutes'],
   ['/milestones', 'Milestones'],
   ['/team', 'Team'],
@@ -18,7 +18,11 @@ test.describe('published content', () => {
       expect(response?.ok()).toBe(true);
       await expect(page.locator('main')).toBeVisible();
       if (path === '/') {
-        await expect(page).toHaveTitle('aLinha');
+        await expect(page).toHaveTitle('Roaming for Applications | PEI DETI UA');
+        await expect(page.getByRole('heading', { level: 1, name: 'Federating Platforms Across Operators' })).toBeVisible();
+        await expect(page.locator('.hero article')).toHaveCount(3);
+        await expect(page.getByRole('link', { name: /Jira/ })).toHaveCount(0);
+        await expect(page.getByRole('link', { name: /GitHub/ })).toHaveCount(1);
       } else {
         await expect(page.getByRole('heading', { level: 1, name: heading })).toBeVisible();
         await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', new RegExp(`${path}/?$`));
@@ -37,19 +41,12 @@ test.describe('published content', () => {
     await expect(page.getByRole('navigation', { name: 'Milestone navigation' }).getByRole('link')).toHaveCount(0);
   });
 
-  test('hybrid minutes expose both web content and their published PDF', async ({ page, request }) => {
+  test('minutes without published notes or a PDF show an explicit empty state', async ({ page }) => {
     await page.goto('/minutes');
     await page.getByRole('link', { name: 'View online' }).first().click();
 
-    await expect(page.locator('article')).toBeVisible();
-    const pdfLink = page.getByRole('link', { name: /Open PDF/ });
-    await expect(pdfLink).toBeVisible();
-    const href = await pdfLink.getAttribute('href');
-    expect(href).toBeTruthy();
-
-    const pdfResponse = await request.get(href!);
-    expect(pdfResponse.ok()).toBe(true);
-    expect(pdfResponse.headers()['content-type']).toContain('application/pdf');
+    await expect(page.getByText('Meeting notes have not been published yet.')).toBeVisible();
+    await expect(page.getByRole('link', { name: /Open PDF/ })).toHaveCount(0);
   });
 
   test('all local resources linked from documentation exist', async ({ page, request }) => {
@@ -82,7 +79,7 @@ test.describe('browser behaviour', () => {
   });
 
   test('representative pages have no automatically detectable accessibility violations', async ({ page }) => {
-    for (const path of ['/', '/milestones/01-requirements', '/minutes/2026-09-21']) {
+    for (const path of ['/', '/milestones/01-requirements', '/minutes/minute-o1']) {
       await page.goto(path);
       // The Canva embed is a third-party document whose markup we do not control.
       // Its host iframe has a descriptive title in the milestone component.

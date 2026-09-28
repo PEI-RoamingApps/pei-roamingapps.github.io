@@ -1,6 +1,6 @@
-# aLinha microsite
+# Roaming for Applications microsite
 
-Static PEI microsite for **aLinha — a CISO-as-a-Service**.
+Static PEI microsite for **Roaming for Applications: Federating Edge Platforms Across Telecom Operators**.
 
 ## Stack
 
@@ -72,10 +72,11 @@ use a text-only layout.
 
 ## Visual identity
 
-The microsite keeps the existing aLinha alignment motif and uses:
+The microsite uses a network and edge-cloud palette:
 
-- warm paper — base canvas
-- petroleum — primary brand / aligned state
-- terracotta — restrained signal / misalignment accent
+- cool slate — light canvas and surfaces
+- deep navy — dark canvas and infrastructure surfaces
+- infrastructure blue — primary brand
+- indigo and cyan — signal accents
 
-The sponsor strip, map footer and navbar interaction style from the original microsite are retained.
+The federation motif connects independent operator platforms through shared interfaces.

@@ -17,7 +17,7 @@ deliverables:
 start: 2026-09-21
 end: 2026-10-15
 ---
-# Objetivo
+## Objetivo
 
 **Construir um protótipo funcional de plataformas de operadores federadas e cooperantes capazes de transferir a execução de uma aplicação (*hand-over*) de forma automática e transparente para o utilizador.**
 

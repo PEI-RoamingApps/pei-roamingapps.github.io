@@ -12,7 +12,7 @@ html {
   scrollbar-width: thin;
 }
 
-/* The page scrollbar follows the aLinha palette and keeps its geometry quiet. */
+/* Keep scrollbar contrast aligned with the active theme. */
 html::-webkit-scrollbar { width: 10px; height: 10px; }
 html::-webkit-scrollbar-track {
   background: var(--color-surface);
@@ -27,9 +27,7 @@ html::-webkit-scrollbar-thumb:hover { background: var(--color-signal); }
 html::-webkit-scrollbar-corner { background: var(--color-surface); }
 
 body {
-  background:
-    radial-gradient(circle at 88% 8%, color-mix(in oklab, var(--color-signal-soft) 28%, transparent) 0, transparent 22rem),
-    var(--color-background);
+  background: var(--color-background);
   color: var(--color-text);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
@@ -38,79 +36,9 @@ body {
 
 ::selection { background: var(--color-signal-soft); color: var(--color-brand-deep); }
 
-.line-atmosphere {
-  position: fixed;
-  inset: 0;
-  z-index: 2;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.line-particles,
-.line-particles canvas { position: absolute !important; inset: 0; width: 100% !important; height: 100% !important; opacity: .82; }
-
-.gradient-blur {
-  position: absolute;
-  opacity: .2;
-  border-radius: 50%;
-  animation: gradient-drift 12s ease-in-out infinite alternate;
-}
-.gradient-blur::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: inherit;
-  filter: blur(40px);
-}
-.gradient-blur::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: repeating-conic-gradient(rgb(0 0 0 / .06) 0% 25%, transparent 0% 50%) 0 0 / 8px 8px;
-}
-.gradient-blur--primary {
-  width: 400px;
-  height: 400px;
-  left: 10%;
-  top: -10%;
-  background: radial-gradient(circle, var(--color-brand) 0%, transparent 70%);
-}
-.gradient-blur--secondary {
-  width: 300px;
-  height: 300px;
-  right: -5%;
-  top: 40%;
-  background: radial-gradient(circle, var(--color-silver) 0%, transparent 70%);
-  animation-direction: alternate-reverse;
-  animation-duration: 10s;
-}
-.gradient-blur--accent {
-  width: 250px;
-  height: 250px;
-  left: 30%;
-  bottom: -5%;
-  background: radial-gradient(circle, var(--color-signal) 0%, transparent 70%);
-  animation-duration: 14s;
-}
-.gradient-blur--small {
-  width: 250px;
-  height: 250px;
-  right: 20%;
-  top: 5%;
-  background: radial-gradient(circle, var(--color-brand) 0%, transparent 70%);
-}
-
 body > header,
 body > main,
 body > footer { position: relative; z-index: 3; }
-
-@keyframes gradient-drift {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(30px, -20px) scale(1.1); }
-  100% { transform: translate(-20px, 30px) scale(.95); }
-}
 
 :focus-visible { outline: 2px solid var(--color-text); outline-offset: 5px; }
 
@@ -124,26 +52,28 @@ body > footer { position: relative; z-index: 3; }
 
 .shell { width: min(100%, 1440px); margin-inline: auto; padding-inline: var(--space-gutter); }
 
+.glass-card {
+  background: color-mix(in srgb, var(--color-surface) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-line) 65%, transparent);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 20px 48px -36px rgb(15 23 42 / .45);
+}
+
 .meta {
   font-family: var(--font-mono); font-size: .8125rem; letter-spacing: .12em;
   text-transform: uppercase; color: var(--color-muted);
 }
 .meta-on { color: var(--color-text); }
 
-.axis-link {
-  position: relative; display: inline-block; padding-bottom: 4px;
-  &::after {
-    content: ""; position: absolute; inset-inline-start: 0; bottom: 0; height: 2px; width: 100%;
-    background: var(--color-brand); transform: scaleX(0); transform-origin: left;
-    transition: transform 300ms var(--ease-align);
-  }
-  &:hover::after, &:focus-visible::after, &[aria-current]::after { transform: scaleX(1); }
+.text-link {
+  transition: color 180ms ease;
+  &:hover, &:focus-visible { color: var(--color-brand); }
 }
 
 .rail-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem 4rem; > * { min-width: 0; } }
 @media (min-width: 1024px) { .rail-grid { grid-template-columns: var(--rail) minmax(0,1fr); } }
 
-.prose-alinha {
+.prose-content {
   > * + * { margin-top: 1.25rem; }
   h2 { margin-top: 2.5rem; font-family: var(--font-display); font-size: 1.35rem; letter-spacing: -.02em; color: var(--color-text); }
   ul, ol { padding-left: 1.25rem; }
@@ -153,33 +83,21 @@ body > footer { position: relative; z-index: 3; }
   img { display: block; width: 100%; height: auto; margin-block: 1.75rem; border: 1px solid var(--color-line); background: #fff; }
 }
 
-/* Motion supports the alignment idea but is never required to understand content. */
+/* Keep reveal motion subtle without fading text below accessible contrast. */
 @media (prefers-reduced-motion: no-preference) {
-  [data-reveal] { opacity: 0; transform: translateY(10px); transition: opacity 650ms var(--ease-align), transform 650ms var(--ease-align); }
-  [data-rule] { transform: scaleX(0); transform-origin: left; transition: transform 950ms var(--ease-align); }
+  [data-reveal] { transform: translateY(10px); transition: transform 650ms var(--ease-align); }
   [data-fill] { transform: scaleY(0); transform-origin: top; transition: transform 1000ms var(--ease-align); }
-  [data-draw] { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1100ms var(--ease-align); }
-  [data-seg] { opacity: .25; transform: translate(var(--dx,-32px),var(--dy,-6px)); transition: opacity 900ms var(--ease-align), transform 900ms var(--ease-align); }
-  [data-reveal].is-aligned, [data-seg].is-aligned { opacity: 1; transform: none; }
-  [data-rule].is-aligned { transform: scaleX(1); }
+  [data-reveal].is-aligned { transform: none; }
   [data-fill].is-aligned { transform: scaleY(1); }
-  [data-draw].is-aligned { stroke-dashoffset: 0; }
 }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .axis-link::after { transition: none; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .text-link { transition: none; } }
 
-/* Circular reveal from the lamp when changing color theme. */
+/* Keep theme changes smooth without the old alignment reveal. */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   /* The UA default uses plus-lighter, which makes overlapping snapshots flash. */
   animation: none;
   mix-blend-mode: normal;
-}
-
-/* Infinite ambient animations fight the view-transition snapshot's compositing
-   and can stall the reveal circle mid-way; freeze them while it runs. */
-:root[data-theme-transitioning] .gradient-blur,
-:root[data-theme-transitioning] .line-particles {
-  animation-play-state: paused !important;
 }
 
 ::view-transition-new(root) {
@@ -197,6 +115,5 @@ body > footer { position: relative; z-index: 3; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-new(root), ::view-transition-old(root), .gradient-blur { animation: none; }
-  .line-particles canvas { opacity: .48; }
+  ::view-transition-new(root), ::view-transition-old(root) { animation: none; }
 }

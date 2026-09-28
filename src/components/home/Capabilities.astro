@@ -1,38 +1,31 @@
 ---
 const functions = [
-  { number: '01', title: 'Maturity & gaps', body: "Understand the organisation's current maturity and where the most relevant gaps are.", verb: 'Assess' },
-  { number: '02', title: 'Policies & evidence', body: 'Keep requirements, policies, procedures and supporting evidence connected.', verb: 'Organise' },
-  { number: '03', title: 'Incident reporting', body: 'Structure the information and workflow needed when an incident must be reported.', verb: 'Respond' },
-  { number: '04', title: 'Indicators', body: 'Track open gaps, evidence status, compliance coverage and relevant deadlines.', verb: 'Monitor' },
+  { number: '01', title: 'Edge discovery', body: 'Find application services and edge resources published by participating operators.', verb: 'Discover' },
+  { number: '02', title: 'Federated catalogue', body: 'Describe offers and capabilities consistently across independent platforms.', verb: 'Catalogue' },
+  { number: '03', title: 'Cross-network hand-over', body: 'Support service continuity as users move between operator domains.', verb: 'Handover' },
+  { number: '04', title: 'Cloud-native edge', body: 'Orchestrate distributed workloads on Kubernetes close to users and devices.', verb: 'Orchestrate' },
 ];
 ---
-<section aria-labelledby="functions-heading" class="border-y border-line bg-brand-soft/45 py-[var(--space-section)]">
+<section aria-labelledby="functions-heading" class="py-[var(--space-section)]">
   <div class="shell">
     <div class="grid gap-4 md:grid-cols-[200px_minmax(0,1fr)] md:gap-12">
-      <p class="meta text-signal">Main functionalities</p>
+      <p class="meta text-signal">Federation capabilities</p>
       <div>
-        <h2 id="functions-heading" class="font-display font-semibold tracking-[-0.045em]" style="font-size:var(--text-section);line-height:1.02">The core compliance workflow.</h2>
-        <p class="mt-4 max-w-2xl text-base leading-relaxed text-text-soft">Assessment, evidence, incident response and monitoring — the core workflows aLinha brings together.</p>
+        <h2 id="functions-heading" class="font-display font-semibold tracking-[-0.045em]" style="font-size:var(--text-section);line-height:1.02">Edge services, across operator boundaries.</h2>
+        <p class="mt-4 max-w-2xl text-base leading-relaxed text-text-soft">A standards-led path from discovering a nearby service to maintaining continuity across mobile networks.</p>
       </div>
     </div>
 
-    <div class="mt-10 grid gap-px border border-line bg-line sm:grid-cols-2 xl:grid-cols-4">
-      {functions.map((item, i) => (
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {functions.map((item) => (
         <article data-reveal class:list={[
-          'group flex min-h-[250px] flex-col p-7 md:p-8',
-          i === 0 && 'bg-background',
-          i === 1 && 'bg-silver-soft',
-          i === 2 && 'bg-brand-soft',
-          i === 3 && 'bg-brand-deep text-white',
+          'glass-card group flex min-h-[250px] flex-col rounded-2xl p-7 transition duration-300 hover:-translate-y-1 hover:border-brand/40 md:p-8',
         ]}>
-          <span class:list={['font-mono text-xs font-medium tracking-[.1em]', i === 3 ? 'text-signal-soft' : 'text-signal']}>{item.number}</span>
-          <div class="my-8 flex items-center" aria-hidden="true">
-            <span class:list={['h-[2px] w-14', i === 3 ? 'bg-signal-soft' : 'bg-signal']}></span>
-            <span class:list={['h-[2px] w-8', i === 3 ? 'bg-white' : 'bg-brand']}></span>
-          </div>
+          <span class="font-mono text-xs font-medium tracking-[.1em] text-brand">{item.number}</span>
+          <div class="my-8 h-8 w-8 rounded-lg border border-brand/25 bg-brand/10" aria-hidden="true"></div>
           <h3 class="font-display text-2xl font-semibold tracking-[-0.03em]">{item.title}</h3>
-          <p class:list={['mt-3 max-w-sm text-[0.95rem] leading-[1.55]', i === 3 ? 'text-white/80' : 'text-text-soft']}>{item.body}</p>
-          <p class:list={['meta mt-auto pt-7', i === 3 ? 'text-white/55' : '']}>{item.verb}</p>
+          <p class="mt-3 max-w-sm text-[0.95rem] leading-[1.55] text-text-soft">{item.body}</p>
+          <p class="meta mt-auto pt-7">{item.verb}</p>
         </article>
       ))}
     </div>

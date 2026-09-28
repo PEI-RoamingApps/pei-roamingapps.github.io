@@ -1,69 +1,71 @@
 ---
 import BaseLayout from '../components/layouts/BaseLayout.astro';
 
-const facts = [
-  ['Course', 'Projeto em Engenharia Informática'],
-  ['Institution', 'Universidade de Aveiro'],
-  ['Year', '2026 / 2027'],
-  ['Current phase', 'Requirements & Planning'],
+const architecture = [
+  ['01', 'Federation Manager', 'Coordinates federation lifecycle, operator relationships and application onboarding.'],
+  ['02', 'Federation Catalogue', 'Publishes discoverable application and edge-service offers with their capabilities and constraints.'],
+  ['03', 'Provider Access Point', 'Connects each operator platform to the federation and exposes provider-side services.'],
 ];
 
-const flow = [
-  ['01', 'Understand', 'Organisation, sector, scope and responsibilities.'],
-  ['02', 'Assess', 'Maturity, requirements and gaps.'],
-  ['03', 'Organise', 'Policies, procedures and evidence.'],
-  ['04', 'Follow up', 'Incidents, actions, indicators and deadlines.'],
-];
+const stack = ['Kubernetes', 'Go', 'Python', 'FastAPI', 'OpenAPI'];
 ---
-<BaseLayout title="Project" description="What aLinha is: a CISO-as-a-Service platform for cybersecurity compliance workflows in Portuguese SMEs.">
+<BaseLayout title="Project" description="Roaming for Applications federates mobile operators' edge platforms so applications can be discovered and handed over closer to users, using IPCEI-CIS ICRA and GSMA OPG.02/EWBI.">
   <header class="border-b border-line py-14 md:py-20">
     <div class="shell">
       <p class="meta text-signal">Project</p>
-      <h1 data-reveal class="mt-4 max-w-5xl font-display font-semibold tracking-[-0.055em]" style="font-size:var(--text-title);line-height:.96">What is aLinha?</h1>
+      <h1 data-reveal class="mt-4 max-w-5xl font-display font-semibold tracking-[-0.055em]" style="font-size:var(--text-title);line-height:.96">Roaming for Applications</h1>
     </div>
   </header>
 
   <section class="py-[var(--space-section)]">
     <div class="shell">
-      <div class="grid gap-8 lg:grid-cols-2 lg:gap-[7vw]">
+      <div class="grid gap-8 border-b border-line pb-14 lg:grid-cols-2 lg:gap-[7vw]">
         <p class="max-w-2xl font-display font-medium leading-[1.18] tracking-[-0.035em]" style="font-size:var(--text-sub)">
-          A shared CISO-as-a-Service model for organisations that need a more structured way to manage cybersecurity compliance.
+          Applications should follow people across operator networks, with compute close to where those applications are used.
         </p>
         <p class="max-w-xl text-base leading-[1.7] text-text-soft">
-          aLinha centralises core compliance work and uses AI as an assisting layer for drafting, prioritisation and explanation. Responsibility and review remain with people.
+          Application roaming federates edge platforms operated by different mobile network operators. Instead of routing every workload to a distant central cloud, services can be discovered and deployed near users, reducing latency and enabling new distributed experiences.
         </p>
       </div>
 
-      <div class="mt-14 border-y border-line py-8">
-        <div class="grid lg:grid-cols-[180px_repeat(4,minmax(0,1fr))]">
-          <div class="flex items-center pr-6"><p class="meta text-signal">Service model</p></div>
-          {flow.map(([number, title, body], i) => (
-            <article data-reveal class="relative min-h-[170px] border-t border-line p-5 lg:border-l lg:border-t-0 lg:p-6">
+      <div class="py-14">
+        <div class="mb-8 grid gap-4 md:grid-cols-[200px_minmax(0,1fr)] md:gap-12">
+          <p class="meta text-signal">IPCEI-CIS · ICRA</p>
+          <div>
+            <h2 class="font-display text-3xl font-semibold tracking-[-0.035em]">A federation built from three roles</h2>
+            <p class="mt-3 max-w-3xl text-base leading-relaxed text-text-soft">The ICRA architecture provides the building blocks for independent providers to participate in a shared, interoperable edge ecosystem.</p>
+          </div>
+        </div>
+        <div class="grid gap-4 md:grid-cols-3">
+          {architecture.map(([number, title, body]) => (
+            <article data-reveal class="glass-card min-h-[220px] rounded-2xl p-6 md:p-8">
               <span class="font-mono text-xs font-medium tracking-[.1em] text-signal">{number}</span>
-              <h2 class="mt-11 font-display text-xl font-semibold tracking-[-0.025em]">{title}</h2>
-              <p class="mt-2 text-sm leading-relaxed text-text-soft">{body}</p>
-              {i < flow.length - 1 && <span class="absolute -right-2 top-1/2 z-10 hidden h-[2px] w-4 -translate-y-1/2 bg-brand lg:block" aria-hidden="true"></span>}
+              <h3 class="mt-9 font-display text-xl font-semibold tracking-[-0.025em]">{title}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-text-soft">{body}</p>
             </article>
           ))}
         </div>
 
-        <div class="mt-5 grid lg:grid-cols-[180px_minmax(0,1fr)]">
-          <div class="flex items-center pr-6"><p class="meta text-signal">Across the flow</p></div>
-          <div class="flex flex-col gap-3 bg-brand-deep px-5 py-5 text-white sm:flex-row sm:items-center sm:justify-between sm:px-6">
-            <p class="text-sm"><strong>AI assistance</strong> · draft, prioritise, explain</p>
-            <p class="text-sm"><strong>Human review</strong> · validate, decide, remain accountable</p>
+      </div>
+
+      <div class="grid gap-10 border-y border-line py-12 lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-12">
+        <p class="meta text-signal">GSMA · OPG.02</p>
+        <div class="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(220px,.55fr)] md:items-start">
+          <div>
+            <h2 class="font-display text-3xl font-semibold tracking-[-0.035em]">One interface between operator domains</h2>
+            <p class="mt-4 max-w-3xl text-base leading-[1.7] text-text-soft">The GSMA East-West Bound Interface (EWBI) supports federation between operators. It enables application and service discovery across domains and a transparent hand-over as users move between networks, while each operator retains control of its own platform.</p>
+          </div>
+          <div class="glass-card rounded-2xl p-5">
+            <p class="meta">Technical direction</p>
+            <p class="mt-3 text-sm leading-relaxed text-text-soft">Cloud-native edge orchestration with Kubernetes, Go and Python services, FastAPI APIs, and OpenAPI contracts.</p>
+            <ul class="mt-5 flex flex-wrap gap-2" aria-label="Planned technology stack">
+              {stack.map((technology) => <li class="rounded-lg border border-line bg-surface/80 px-2.5 py-1 font-mono text-xs text-text">{technology}</li>)}
+            </ul>
           </div>
         </div>
       </div>
 
-      <dl class="mt-12 grid gap-px border border-line bg-line sm:grid-cols-2 xl:grid-cols-4">
-        {facts.map(([term, value]) => (
-          <div class="bg-surface p-5">
-            <dt class="meta">{term}</dt>
-            <dd class="mt-2 text-[0.95rem] font-medium">{value}</dd>
-          </div>
-        ))}
-      </dl>
+      <p class="mt-8 max-w-3xl text-sm leading-relaxed text-muted">The project investigates how standards-based federation can make edge capacity usable across operator boundaries without hiding the distributed nature of the infrastructure.</p>
     </div>
   </section>
 </BaseLayout>

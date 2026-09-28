@@ -3,71 +3,38 @@ import Logo from '../ui/Logo.astro';
 import { url } from '../../lib/paths';
 
 const currentYear = new Date().getFullYear();
-const advisors = ['João Almeida', 'Daniel Ferreira'];
+const advisors = ['Diogo Gomes (Advisor)', 'Rafael Direito (Co-Advisor)'];
 const secondaryLinks = [
     { label: 'Milestones', href: '/milestones' },
     { label: 'Minutes', href: '/minutes' },
     { label: 'Documentation', href: '/documentation' },
 ];
 
-const aettua = {
-    name: 'AETTUA — Associação de Eletrónica, Telecomunicações e Telemática da UA',
-    src: '/images/logos/aettua.png',
-    width: 486,
-    href: 'https://aettua.pt',
+const university = {
+    name: 'Universidade de Aveiro',
+    src: '/images/logos/ua.png',
+    width: 345,
+    href: 'https://www.ua.pt',
 };
-
-const institutionalSupporters = [
-    { name: 'Universidade de Aveiro', src: '/images/logos/ua.png', width: 345, href: 'https://www.ua.pt' },
-    { name: 'IEETA', src: '/images/logos/ieeta.png', width: 287, href: 'https://www.ieeta.pt' },
-    { name: 'LASI — Laboratório Associado de Sistemas Inteligentes', src: '/images/logos/lasi.png', width: 192 },
-];
 ---
 
-<footer
-        class="footer-panel relative mt-auto overflow-hidden border-t border-line"
->
-    <div class="supporter-strip border-b border-line">
+<footer class="footer-panel relative mt-auto overflow-hidden border-t border-line/60">
+    <div class="supporter-strip">
         <div class="supporter-strip__inner shell">
             <a
-                    href={aettua.href}
+                    href={university.href}
                     rel="noopener noreferrer"
                     target="_blank"
-                    class="supporter-strip__aettua"
+                    class="supporter-strip__university"
             >
                 <img
-                        src={url(aettua.src)}
-                        alt={aettua.name}
-                        width={aettua.width}
+                        src={url(university.src)}
+                        alt={university.name}
+                        width={university.width}
                         height="128"
                         loading="lazy"
                 />
             </a>
-            <ul class="supporter-strip__institutions">
-            {
-                institutionalSupporters.map((s) => {
-                    const Tag = s.href ? 'a' : 'span';
-                    return (
-                        <li>
-                            <Tag
-                                    href={s.href}
-                                    rel={s.href ? 'noopener noreferrer' : undefined}
-                                    target={s.href ? '_blank' : undefined}
-                                    class="supporter-logo"
-                            >
-                                <img
-                                        src={url(s.src)}
-                                        alt={s.name}
-                                        width={s.width}
-                                        height="128"
-                                        loading="lazy"
-                                />
-                            </Tag>
-                        </li>
-                    );
-                })
-            }
-            </ul>
         </div>
     </div>
     <div class="shell relative grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.4fr)_1fr_1fr_1fr] lg:gap-16">
@@ -86,7 +53,7 @@ const institutionalSupporters = [
         </div>
         <div class="flex flex-col items-start gap-2.5">
             {secondaryLinks.map((link) => (
-                <a href={url(link.href)} class="axis-link meta">{link.label}</a>
+                <a href={url(link.href)} class="text-link meta">{link.label}</a>
             ))}
         </div>
     </div>
@@ -97,7 +64,7 @@ const institutionalSupporters = [
 
 <style>
     .footer-panel {
-        background-color: var(--color-brand-soft);
+        background-color: color-mix(in srgb, var(--color-surface) 72%, transparent);
     }
 
     .footer-panel > .shell {
@@ -121,68 +88,33 @@ const institutionalSupporters = [
     .supporter-strip {
         position: relative;
         isolation: isolate;
-        background: var(--color-background);
-    }
-
-    .supporter-strip::before {
-        content: '';
-        position: absolute;
-        inset: 0 0 auto;
-        height: 4px;
-        background: linear-gradient(to right, var(--color-brand-deep) 0 36%, var(--color-signal) 36% 64%, var(--color-silver) 64% 100%);
+        background: transparent;
     }
 
     .supporter-strip__inner {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+        display: flex;
+        justify-content: center;
         align-items: center;
         min-height: 132px;
         padding-block: 1.5rem;
     }
 
-    .supporter-strip__aettua {
+    .supporter-strip__university {
         display: flex;
         justify-content: center;
-        padding-inline: 2rem;
-        opacity: 0.9;
+        padding-inline: 1rem;
+        opacity: 0.65;
+        filter: grayscale(1);
         transition: opacity 300ms;
     }
 
-    .supporter-strip__aettua:hover,
-    .supporter-logo:hover {
-        opacity: 1;
+    .supporter-strip__university:hover {
+        opacity: 0.9;
     }
 
-    .supporter-strip__aettua img {
+    .supporter-strip__university img {
         width: auto;
         height: clamp(2.5rem, 4.4vw, 4rem);
-        max-width: 100%;
-        object-fit: contain;
-    }
-
-    .supporter-strip__institutions {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        gap: clamp(0.75rem, 2vw, 2.5rem);
-        padding-inline: clamp(0.75rem, 2vw, 2rem);
-    }
-
-    .supporter-strip__institutions li {
-        display: flex;
-        min-width: 0;
-        justify-content: center;
-    }
-
-    .supporter-logo {
-        display: block;
-        opacity: 0.85;
-        transition: opacity 300ms;
-    }
-
-    .supporter-logo img {
-        width: auto;
-        height: clamp(2rem, 3.2vw, 3.25rem);
         max-width: 100%;
         object-fit: contain;
     }
@@ -193,21 +125,8 @@ const institutionalSupporters = [
             padding-block: 1rem;
         }
 
-        .supporter-strip__aettua {
-            padding-inline: 0.5rem;
-        }
-
-        .supporter-strip__aettua img {
+        .supporter-strip__university img {
             height: clamp(1.75rem, 7vw, 2.75rem);
-        }
-
-        .supporter-strip__institutions {
-            gap: 0.5rem;
-            padding-inline: 0.5rem;
-        }
-
-        .supporter-logo img {
-            height: clamp(1.5rem, 6vw, 2.25rem);
         }
     }
 </style>

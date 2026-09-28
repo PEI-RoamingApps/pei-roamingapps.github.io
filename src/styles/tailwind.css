@@ -1,35 +1,36 @@
 @import "tailwindcss";
 
-/* aLinha identity: white canvas + green and silver. */
+/* Roaming for Applications: quiet zinc surfaces, infrastructure blue and indigo. */
 @theme {
-  --color-paper: #FFFFFF;
-  --color-paper-deep: #E5E7E9;
-  --color-paper-soft: #F7F7F8;
-  --color-ink: #202124;
-  --color-ink-soft: #555A5F;
+  --color-paper: #F8FAFC;
+  --color-paper-deep: #E2E8F0;
+  --color-paper-soft: #F1F5F9;
+  --color-ink: #09090B;
+  --color-ink-soft: #3F3F46;
 
-  --color-brand: #0B4F4A;
-  --color-brand-deep: #063632;
-  --color-brand-soft: #D2E4E1;
+  --color-brand: #2563EB;
+  --color-brand-deep: #1E3A8A;
+  --color-brand-soft: #DBEAFE;
 
-  --color-signal: #168C80;
-  --color-signal-soft: #CDEDEA;
-  --color-silver: #747B82;
-  --color-silver-soft: #D9DDE0;
+  --color-signal: #6366F1;
+  --color-signal-soft: #E0E7FF;
+  --color-silver: #0891B2;
+  --color-silver-soft: #CFFAFE;
 
   --color-white: #FFFFFF;
-  --color-line: #B8BDC1;
-  --color-line-soft: #D9DDE0;
-  --color-line-strong: #202124;
+  --color-line: #D4D4D8;
+  --color-line-soft: #E4E4E7;
+  --color-line-strong: #52525B;
 
-  --color-background: #FFFFFF;
-  --color-surface: #F7F7F8;
-  --color-text: #202124;
-  --color-text-soft: #555A5F;
-  --color-muted: #6F7479;
+  --color-background: #F8FAFC;
+  --color-bg: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-text: #09090B;
+  --color-text-soft: #3F3F46;
+  --color-muted: #52525B;
 
-  --font-display: "Avenir Next", "Helvetica Neue", Arial, sans-serif;
-  --font-body: "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "DM Sans", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
   --text-hero: clamp(3.4rem, 1.25rem + 7.7vw, 7.5rem);
@@ -45,40 +46,42 @@
 }
 
 :root[data-theme="dark"] {
-  --color-background: #121615;
-  --color-surface: #1A201F;
-  --color-text: #ECEFED;
-  --color-text-soft: #BEC6C3;
-  --color-muted: #929C99;
-  --color-line: #38413F;
-  --color-line-soft: #29312F;
-  --color-line-strong: #DDE2E0;
+  --color-background: #09090B;
+  --color-bg: #09090B;
+  --color-surface: #18181B;
+  --color-text: #FAFAFA;
+  --color-text-soft: #D4D4D8;
+  --color-muted: #A1A1AA;
+  --color-line: #3F3F46;
+  --color-line-soft: #27272A;
+  --color-line-strong: #A1A1AA;
 
-  --color-brand: #6E9690;
-  --color-brand-deep: #202D2B;
-  --color-brand-soft: #293936;
-  --color-signal: #89AAA5;
-  --color-signal-soft: #30413E;
-  --color-silver: #AAB0B4;
-  --color-silver-soft: #3A4144;
+  --color-brand: #60A5FA;
+  --color-brand-deep: #1D4ED8;
+  --color-brand-soft: #172554;
+  --color-signal: #A5B4FC;
+  --color-signal-soft: #312E81;
+  --color-silver: #22D3EE;
+  --color-silver-soft: #164E63;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --color-background: #121615;
-    --color-surface: #1A201F;
-    --color-text: #ECEFED;
-    --color-text-soft: #BEC6C3;
-    --color-muted: #929C99;
-    --color-line: #38413F;
-    --color-line-soft: #29312F;
-    --color-line-strong: #DDE2E0;
-    --color-brand: #6E9690;
-    --color-brand-deep: #202D2B;
-    --color-brand-soft: #293936;
-    --color-signal: #89AAA5;
-    --color-signal-soft: #30413E;
-    --color-silver: #AAB0B4;
-    --color-silver-soft: #3A4144;
+    --color-background: #09090B;
+    --color-bg: #09090B;
+    --color-surface: #18181B;
+    --color-text: #FAFAFA;
+    --color-text-soft: #D4D4D8;
+    --color-muted: #A1A1AA;
+    --color-line: #3F3F46;
+    --color-line-soft: #27272A;
+    --color-line-strong: #A1A1AA;
+    --color-brand: #60A5FA;
+    --color-brand-deep: #1E3A8A;
+    --color-brand-soft: #172554;
+    --color-signal: #A5B4FC;
+    --color-signal-soft: #312E81;
+    --color-silver: #22D3EE;
+    --color-silver-soft: #164E63;
   }
 }

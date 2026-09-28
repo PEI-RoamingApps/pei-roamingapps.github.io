@@ -21,8 +21,6 @@
   "dependencies": {
     "@astrojs/react": "^6.0.6",
     "@tailwindcss/vite": "^4.3.3",
-    "@tsparticles/react": "^4.4.0",
-    "@tsparticles/slim": "^4.4.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "astro": "^7.3.3",

@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 
 test('mobile menu opens, is keyboard-dismissible, and remains accessible', async ({ page }) => {
   await page.goto('/');
-  const toggle = page.getByRole('button', { name: 'Menu' });
+  const toggle = page.getByRole('navigation', { name: 'Main' }).getByRole('button', { name: 'Menu' });
   const panel = page.locator('#nav-panel');
 
   await toggle.click();
@@ -22,7 +22,7 @@ test('mobile menu opens, is keyboard-dismissible, and remains accessible', async
 
 test('mobile navigation reaches a section and marks it as current', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Menu' }).click();
+  await page.getByRole('navigation', { name: 'Main' }).getByRole('button', { name: 'Menu' }).click();
   await page.locator('#nav-panel').getByRole('link', { name: 'Milestones' }).click();
 
   await expect(page).toHaveURL(/\/milestones$/);
