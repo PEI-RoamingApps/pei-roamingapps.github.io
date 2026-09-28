@@ -1,7 +1,7 @@
 name: Deploy
 
 on:
-  push: { branches: [master] }
+  push: { branches: [main] }
   workflow_dispatch:
 
 permissions:
@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
