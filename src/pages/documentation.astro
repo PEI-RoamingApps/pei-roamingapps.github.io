@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../components/layouts/BaseLayout.astro';
+import PageHeader from '../components/global/PageHeader.astro';
+import { url } from '../lib/paths';
+
+const docs = (await getCollection('docs')).filter((doc) => doc.data.file || doc.data.href);
+const orderDocs = (items: typeof docs) => items.sort((a,b) => (a.data.order - b.data.order) || a.data.title.localeCompare(b.data.title));
+const groups = [
+  { title: 'Project', items: orderDocs(docs.filter((d) => ['vision','architecture','requirements','research'].includes(d.data.category))) },
+  { title: 'Compliance references', items: orderDocs(docs.filter((d) => d.data.category === 'compliance')) },
+  { title: 'Presentations & reports', items: orderDocs(docs.filter((d) => ['presentations','reports'].includes(d.data.category))) },
+].filter((group) => group.items.length > 0);
+
+const resourceFor = (doc: (typeof docs)[number]) => {
+  const resource = doc.data.file ?? doc.data.href;
+  if (!resource) return undefined;
+  return resource.startsWith('http') ? resource : url(resource);
+};
+---
+<BaseLayout title="Documentation" description="Documents, presentations and references used or produced throughout the aLinha PEI project.">
+  <PageHeader label="Project resources" title="Documentation" lead="Documents, presentations and compliance references used or produced throughout PEI." />
+
+  <section class="py-[var(--space-section)]">
+    <div class="shell grid gap-14">
+      {groups.map((group) => (
+        <section aria-labelledby={`docs-${group.title.toLowerCase().replaceAll(' ','-').replaceAll('&','and')}`}>
+          <h2 id={`docs-${group.title.toLowerCase().replaceAll(' ','-').replaceAll('&','and')}`} class="font-display text-2xl font-semibold tracking-[-0.03em]">{group.title}</h2>
+          <div class="mt-4 border-t border-line">
+            {group.items.map((doc) => {
+              const resource = resourceFor(doc);
+              const external = Boolean(resource?.startsWith('http'));
+              return (
+                <a
+                  href={resource}
+                  rel={external ? 'noopener noreferrer' : undefined}
+                  target={external ? '_blank' : undefined}
+                  class:list={[
+                    'grid items-center gap-2 border-b border-line py-5 md:grid-cols-[minmax(0,1fr)_150px_100px] md:gap-8',
+                    'transition-colors hover:bg-brand/5',
+                  ]}
+                >
+                  <strong class="font-medium">{doc.data.title}</strong>
+                  <span class="meta">{doc.data.state}</span>
+                  <span class="meta text-brand md:text-right">{doc.data.format} ↗</span>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,55 @@
+---
+/* Several independent segments, offset at different distances, sliding
+   into one shared petroleum axis. Uses the existing [data-seg]/[data-draw]
+   reveal system (src/scripts/align.ts) so reduced-motion renders the
+   finished, aligned state with nothing left to animate. */
+interface Props {
+    variant?: 'hero' | 'section';
+    class?: string;
+}
+
+const { variant = 'section', class: className = '' } = Astro.props;
+const isHero = variant === 'hero';
+const h = isHero ? 420 : 220;
+const axisX = 560;
+
+const segments = isHero
+    ? [
+          { y: 40, x0: 60, dx: -120, rot: -1.2, tone: 'signal' },
+          { y: 120, x0: 180, dx: -90, rot: 0.8, tone: 'ink' },
+          { y: 200, x0: 20, dx: -160, rot: -0.6, tone: 'ink' },
+          { y: 280, x0: 260, dx: -70, rot: 1.1, tone: 'signal' },
+          { y: 360, x0: 140, dx: -110, rot: -0.9, tone: 'ink' },
+      ]
+    : [
+          { y: 30, x0: 80, dx: -90, rot: -1, tone: 'signal' },
+          { y: 100, x0: 160, dx: -70, rot: 0.7, tone: 'ink' },
+          { y: 170, x0: 40, dx: -120, rot: -0.5, tone: 'ink' },
+      ];
+---
+<svg
+        viewBox={`0 0 640 ${h}`}
+        class:list={['w-full h-auto overflow-visible', className]}
+        fill="none"
+        aria-hidden="true"
+>
+    <line
+            x1={axisX} y1="0" x2={axisX} y2={h}
+            stroke="var(--color-brand)"
+            stroke-width="2.5"
+            data-draw
+    />
+    {segments.map((seg, i) => (
+        <line
+                x1={seg.x0}
+                y1={seg.y}
+                x2={axisX}
+                y2={seg.y}
+                stroke={seg.tone === 'signal' ? 'var(--color-signal)' : 'var(--color-text)'}
+                stroke-width="2"
+                data-seg
+                style={`--dx:${seg.dx}px; --dy:0px; --rot:${seg.rot}deg; transition-delay:${i * 90}ms`}
+        />
+    ))}
+    <line x1={axisX - 7} y1={segments[0].y} x2={axisX + 7} y2={segments[0].y} stroke="var(--color-brand)" stroke-width="3" />
+</svg>

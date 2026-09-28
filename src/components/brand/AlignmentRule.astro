@@ -1,0 +1,25 @@
+---
+/* A rule that can begin offset and slide into alignment (data-rule),
+   or begin already aligned for a quieter section. Superset of
+   ui/Rule.astro with brand-aware tones. */
+interface Props {
+    animated?: boolean;
+    tone?: 'line' | 'strong' | 'brand' | 'signal';
+    delay?: number;
+    class?: string;
+}
+
+const { animated = false, tone = 'line', delay = 0, class: className = '' } = Astro.props;
+const toneClass = {
+    line: 'bg-line',
+    strong: 'bg-text',
+    brand: 'bg-brand',
+    signal: 'bg-signal',
+}[tone];
+---
+<div
+        class:list={['h-px w-full', toneClass, className]}
+        data-rule={animated ? '' : undefined}
+        style={delay ? `transition-delay:${delay}ms` : undefined}
+>
+</div>

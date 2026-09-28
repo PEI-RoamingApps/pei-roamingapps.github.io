@@ -1,0 +1,26 @@
+---
+interface Props {
+    animated?: boolean;
+    strong?: boolean;
+    /** "brand" renders a petroleum axis rule instead of ink/line. */
+    tone?: 'line' | 'strong' | 'brand' | 'signal';
+    delay?: number;
+    class?: string;
+}
+
+const { animated = false, strong = false, tone, delay = 0, class: className = '' } = Astro.props;
+const resolvedTone = tone ?? (strong ? 'strong' : 'line');
+const toneClass = {
+    line: 'bg-line',
+    strong: 'bg-text',
+    brand: 'bg-brand',
+    signal: 'bg-signal',
+}[resolvedTone];
+---
+
+<div
+        class:list={['h-px w-full', toneClass, className]}
+        data-rule={animated ? '' : undefined}
+        style={delay ? `transition-delay:${delay}ms` : undefined}
+>
+</div>

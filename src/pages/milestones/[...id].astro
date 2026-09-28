@@ -1,0 +1,94 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../components/layouts/BaseLayout.astro';
+import StatusDot from '../../components/ui/StatusDot.astro';
+import { url } from '../../lib/paths';
+
+export const getStaticPaths = (async () => {
+  const milestones = await getCollection('milestones');
+  return milestones.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { number, title, status, summary, deliverables, canvaPresentation, presentations, reports } = entry.data;
+const { Content } = await render(entry);
+const all = (await getCollection('milestones')).sort((a,b) => a.data.number - b.data.number);
+const pos = all.findIndex((m) => m.id === entry.id);
+const previous = all[pos-1]; const next = all[pos+1];
+const completedDeliverables = deliverables.filter((item) => item.status.toLowerCase() === 'done').length;
+const resourceGroups = [
+  { label: 'Presentations', items: presentations.filter((item) => item.href) },
+  { label: 'Reports', items: reports.filter((item) => item.href) },
+].filter((group) => group.items.length > 0);
+---
+<BaseLayout title={`Phase ${String(number).padStart(2,'0')} — ${title}`} description={summary}>
+  <header class="border-b border-line py-12 md:py-18">
+    <div class="shell">
+      <a href={url('/milestones')} class="axis-link meta meta-on">← Milestones</a>
+      <div class="mt-8 flex flex-wrap items-center gap-5"><p class="meta text-signal">Phase {String(number).padStart(2,'0')}</p><StatusDot status={status} /></div>
+      <h1 data-reveal class="mt-4 max-w-5xl font-display font-semibold tracking-[-0.055em]" style="font-size:var(--text-title);line-height:.96">{title}</h1>
+      <p class="mt-6 max-w-3xl text-lg leading-relaxed text-text-soft">{summary}</p>
+    </div>
+  </header>
+
+  {canvaPresentation && <section class="border-b border-line pb-[var(--space-section)] pt-10 md:pt-14" aria-labelledby="milestone-presentation">
+    <div class="shell">
+      <div class="mb-5 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p class="meta text-signal">Presentation</p>
+          <h2 id="milestone-presentation" class="mt-2 font-display text-2xl font-semibold tracking-[-0.03em]">{canvaPresentation.title}</h2>
+        </div>
+        <a href={canvaPresentation.embedUrl} target="_blank" rel="noopener noreferrer" class="axis-link meta meta-on">Open in Canva ↗</a>
+      </div>
+      <div class="canva-frame border border-line bg-surface">
+        <iframe
+          title={canvaPresentation.title}
+          src={canvaPresentation.embedUrl}
+          loading="lazy"
+          allow="fullscreen"
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      </div>
+    </div>
+  </section>}
+
+  <section class="py-[var(--space-section)]">
+    <div class="shell grid gap-14 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16 xl:grid-cols-[minmax(0,1fr)_22rem] xl:gap-24">
+      <aside aria-labelledby="milestone-deliverables" class="lg:col-start-2 lg:row-start-1">
+        <div class="border border-line bg-surface p-5 lg:sticky lg:top-32">
+          <div class="flex items-baseline justify-between gap-4">
+            <p id="milestone-deliverables" class="meta text-signal">Deliverables</p>
+            <p class="font-mono text-xs text-muted"><span class="sr-only">Done: </span>{completedDeliverables} / {deliverables.length}</p>
+          </div>
+          <ol class="mt-4 border-t border-line">
+            {deliverables.map((item, index) => <li class="grid grid-cols-[auto_1fr_auto] items-baseline gap-3 border-b border-line py-3 text-sm">
+              <span class="font-mono text-xs text-muted">{String(index + 1).padStart(2, '0')}</span>
+              <span>{item.title}</span>
+              <span class="meta text-right">{item.status}</span>
+            </li>)}
+          </ol>
+
+          {resourceGroups.map((group) => <div class="mt-8"><p class="meta">{group.label}</p><div class="mt-3 border-t border-line">{group.items.map((item) =>
+            <a href={item.href} class="axis-link flex justify-between gap-4 border-b border-line py-3 text-sm"><span>{item.title}</span><span class="meta">Open ↗</span></a>
+          )}</div></div>)}
+        </div>
+      </aside>
+
+      <div class="min-w-0 lg:col-start-1 lg:row-start-1">
+        <p class="meta text-signal">Focus</p>
+        <div class="prose-alinha mt-5 max-w-3xl text-base leading-[1.7] text-text-soft"><Content /></div>
+      </div>
+    </div>
+  </section>
+
+  <nav aria-label="Milestone navigation" class="shell grid grid-cols-2 gap-8 border-t border-line py-10">
+    <div>{previous && <a href={url(`/milestones/${previous.id}`)} class="axis-link text-sm">← {previous.data.title}</a>}</div>
+    <div class="text-right">{next && <a href={url(`/milestones/${next.id}`)} class="axis-link text-sm">{next.data.title} →</a>}</div>
+  </nav>
+</BaseLayout>
+
+<style>
+  .canva-frame { aspect-ratio: 16 / 9; overflow: hidden; box-shadow: 10px 10px 0 var(--color-silver-soft); }
+  .canva-frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+</style>

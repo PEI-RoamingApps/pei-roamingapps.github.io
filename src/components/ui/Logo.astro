@@ -1,0 +1,10 @@
+---
+interface Props {
+    class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+<span class:list={['block max-w-[10rem] font-display font-semibold leading-tight', className]}>
+    Roaming for Applications
+</span>

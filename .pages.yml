@@ -1,0 +1,353 @@
+media:
+  - name: documents
+    label: Document files
+    input: public/documents
+    output: /documents
+    rename: safe
+    categories: [document, compressed, spreadsheet]
+  - name: team-images
+    label: Team images
+    input: public/images/team
+    output: /images/team
+    rename: safe
+    categories: [image]
+  - name: content-images
+    label: Content images
+    input: public/images/content
+    output: /images/content
+    rename: safe
+    categories: [image]
+
+settings:
+  content:
+    merge: true
+  commit:
+    templates:
+      create: "content: add {filename}"
+      update: "content: update {filename}"
+      delete: "content: remove {filename}"
+      rename: "content: rename {oldFilename} to {filename}"
+
+content:
+  - name: project-content
+    label: Project content
+    type: group
+    items:
+      - name: documents
+        label: Documents
+        type: collection
+        path: src/content/docs
+        format: yaml-frontmatter
+        filename:
+          template: "{primary}.md"
+          field: create
+        view:
+          fields: [title, category, milestone, state]
+          primary: title
+          sort: [order, title, category, milestone, state]
+          search: [title, category, milestone, state]
+          default:
+            sort: order
+            order: asc
+        fields:
+          - name: title
+            label: Title
+            type: string
+            required: true
+          - name: category
+            label: Category
+            type: select
+            required: true
+            options:
+              values:
+                - { name: vision, label: Vision }
+                - { name: architecture, label: Architecture }
+                - { name: requirements, label: Requirements }
+                - { name: presentations, label: Presentations }
+                - { name: reports, label: Reports }
+                - { name: research, label: Research }
+                - { name: compliance, label: Compliance references }
+          - name: milestone
+            label: Milestone
+            type: string
+            description: "For example: M1 · Inception"
+          - name: state
+            label: State
+            type: string
+            required: true
+          - name: file
+            label: Uploaded file
+            type: file
+            description: Upload a document here, or use External link below.
+            options:
+              media: documents
+              categories: [document, compressed, spreadsheet]
+              rename: safe
+          - name: href
+            label: External link
+            type: string
+            description: Use this only when the document lives outside this repository.
+          - name: format
+            label: Format label
+            type: string
+            description: "For example: PDF, DOCX, XLSX or LINK"
+          - name: order
+            label: Display order
+            type: number
+          - name: body
+            label: Notes
+            type: rich-text
+            options:
+              media: content-images
+
+      - name: minutes
+        label: Meeting minutes
+        type: collection
+        path: src/content/minutes
+        format: yaml-frontmatter
+        filename:
+          template: "{date}.md"
+          field: create
+        view:
+          fields: [index, date, subject, scheduled]
+          primary: subject
+          sort: [index, date, subject]
+          search: [subject, attendees]
+          default:
+            sort: index
+            order: desc
+        fields:
+          - name: index
+            label: Meeting number
+            type: number
+            required: true
+          - name: date
+            label: Date
+            type: date
+            required: true
+          - name: subject
+            label: Subject
+            type: string
+            required: true
+          - name: attendees
+            label: Attendees
+            type: string
+            list: true
+          - name: summary
+            label: Summary
+            type: text
+          - name: scheduled
+            label: Scheduled
+            type: boolean
+          - name: mode
+            label: Minute format
+            type: select
+            required: true
+            default: markdown
+            options:
+              values:
+                - { name: markdown, label: Web page }
+                - { name: pdf, label: PDF only }
+                - { name: hybrid, label: Web page and PDF }
+          - name: pdf
+            label: Minutes PDF
+            type: file
+            description: Upload the original meeting minutes in PDF format.
+            options:
+              media: documents
+              categories: [document]
+              rename: safe
+          - name: body
+            label: Minutes
+            type: rich-text
+            options:
+              media: content-images
+
+      - name: milestones
+        label: Milestones
+        type: collection
+        path: src/content/milestones
+        format: yaml-frontmatter
+        operations:
+          delete: false
+        view:
+          fields: [number, title, status, start, end]
+          primary: title
+          sort: [number, start, end, status]
+          search: [title, summary]
+          default:
+            sort: number
+            order: asc
+        fields:
+          - name: number
+            label: Number
+            type: number
+            required: true
+          - name: title
+            label: Title
+            type: string
+            required: true
+          - name: status
+            label: Status
+            type: select
+            required: true
+            options:
+              values:
+                - { name: planned, label: Planned }
+                - { name: in-progress, label: In progress }
+                - { name: done, label: Done }
+          - name: start
+            label: Start date
+            type: date
+            required: true
+          - name: end
+            label: End date
+            type: date
+            required: true
+          - name: summary
+            label: Summary
+            type: text
+            required: true
+          - name: deliverables
+            label: Deliverables
+            type: object
+            list:
+              collapsible:
+                collapsed: true
+                summary: "{title} — {status}"
+            fields:
+              - name: title
+                label: Title
+                type: string
+                required: true
+              - name: status
+                label: Status
+                type: string
+                required: true
+          - name: presentations
+            label: Presentations
+            type: object
+            list:
+              collapsible:
+                collapsed: true
+                summary: "{title}"
+            fields:
+              - name: title
+                label: Title
+                type: string
+                required: true
+              - name: href
+                label: File
+                type: file
+                options:
+                  media: documents
+                  categories: [document]
+                  rename: safe
+          - name: canvaPresentation
+            label: Canva presentation
+            type: object
+            fields:
+              - name: title
+                label: Title
+                type: string
+                required: true
+              - name: embedUrl
+                label: Canva embed URL
+                type: string
+                required: true
+                description: "Use Canva's public URL ending in /view?embed."
+          - name: reports
+            label: Reports
+            type: object
+            list:
+              collapsible:
+                collapsed: true
+                summary: "{title}"
+            fields:
+              - name: title
+                label: Title
+                type: string
+                required: true
+              - name: href
+                label: File
+                type: file
+                options:
+                  media: documents
+                  categories: [document]
+                  rename: safe
+          - name: body
+            label: Description
+            type: rich-text
+            description: Use the image button in the toolbar to insert figures between paragraphs.
+            options:
+              media: content-images
+
+      - name: team
+        label: Team
+        type: collection
+        path: src/content/team
+        format: yaml-frontmatter
+        filename:
+          template: "{primary}.md"
+          field: create
+        view:
+          fields: [name, group, role, order]
+          primary: name
+          sort: [order, name, group, role]
+          search: [name, role, focus]
+          default:
+            sort: order
+            order: asc
+        fields:
+          - name: name
+            label: Name
+            type: string
+            required: true
+          - name: group
+            label: Group
+            type: select
+            required: true
+            options:
+              values:
+                - { name: student, label: Student }
+                - { name: advisor, label: Advisor }
+                - { name: collaborator, label: Collaborator }
+          - name: affiliation
+            label: Affiliation
+            type: string
+            description: "Shown for advisors and collaborators, e.g. DETI · Universidade de Aveiro"
+          - name: initials
+            label: Initials
+            type: string
+            required: true
+          - name: image
+            label: Photo
+            type: image
+            options:
+              media: team-images
+              rename: safe
+          - name: imageAlt
+            label: Photo description
+            type: string
+          - name: role
+            label: Role
+            type: string
+            required: true
+          - name: focus
+            label: Focus
+            type: text
+          - name: github
+            label: GitHub URL
+            type: string
+          - name: linkedin
+            label: LinkedIn URL
+            type: string
+          - name: order
+            label: Display order
+            type: number
+            required: true
+          - name: body
+            label: Biography
+            type: rich-text
+            options:
+              media: false

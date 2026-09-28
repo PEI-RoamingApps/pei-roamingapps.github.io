@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+/* aLinha identity: white canvas + green and silver. */
+@theme {
+  --color-paper: #FFFFFF;
+  --color-paper-deep: #E5E7E9;
+  --color-paper-soft: #F7F7F8;
+  --color-ink: #202124;
+  --color-ink-soft: #555A5F;
+
+  --color-brand: #0B4F4A;
+  --color-brand-deep: #063632;
+  --color-brand-soft: #D2E4E1;
+
+  --color-signal: #168C80;
+  --color-signal-soft: #CDEDEA;
+  --color-silver: #747B82;
+  --color-silver-soft: #D9DDE0;
+
+  --color-white: #FFFFFF;
+  --color-line: #B8BDC1;
+  --color-line-soft: #D9DDE0;
+  --color-line-strong: #202124;
+
+  --color-background: #FFFFFF;
+  --color-surface: #F7F7F8;
+  --color-text: #202124;
+  --color-text-soft: #555A5F;
+  --color-muted: #6F7479;
+
+  --font-display: "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --text-hero: clamp(3.4rem, 1.25rem + 7.7vw, 7.5rem);
+  --text-title: clamp(2.8rem, 1.4rem + 4vw, 5.4rem);
+  --text-section: clamp(2rem, 1.25rem + 2.2vw, 3.4rem);
+  --text-sub: clamp(1.55rem, 1.2rem + 1vw, 2.3rem);
+  --text-lead: clamp(1.1rem, 1rem + 0.5vw, 1.35rem);
+
+  --space-section: clamp(3.75rem, 2.5rem + 4vw, 7rem);
+  --space-gutter: clamp(1.5rem, 0.65rem + 4.2vw, 6rem);
+  --rail: 200px;
+  --ease-align: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root[data-theme="dark"] {
+  --color-background: #121615;
+  --color-surface: #1A201F;
+  --color-text: #ECEFED;
+  --color-text-soft: #BEC6C3;
+  --color-muted: #929C99;
+  --color-line: #38413F;
+  --color-line-soft: #29312F;
+  --color-line-strong: #DDE2E0;
+
+  --color-brand: #6E9690;
+  --color-brand-deep: #202D2B;
+  --color-brand-soft: #293936;
+  --color-signal: #89AAA5;
+  --color-signal-soft: #30413E;
+  --color-silver: #AAB0B4;
+  --color-silver-soft: #3A4144;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-background: #121615;
+    --color-surface: #1A201F;
+    --color-text: #ECEFED;
+    --color-text-soft: #BEC6C3;
+    --color-muted: #929C99;
+    --color-line: #38413F;
+    --color-line-soft: #29312F;
+    --color-line-strong: #DDE2E0;
+    --color-brand: #6E9690;
+    --color-brand-deep: #202D2B;
+    --color-brand-soft: #293936;
+    --color-signal: #89AAA5;
+    --color-signal-soft: #30413E;
+    --color-silver: #AAB0B4;
+    --color-silver-soft: #3A4144;
+  }
+}

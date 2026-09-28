@@ -1,0 +1,132 @@
+---
+import Logo from '../ui/Logo.astro';
+import ThemeToggle from '../ui/ThemeToggle.astro';
+
+const links = [
+  { label: 'Project', href: '/project' },
+  { label: 'Minutes', href: '/minutes' },
+  { label: 'Milestones', href: '/milestones' },
+  { label: 'Team', href: '/team' },
+  { label: 'Documentation', href: '/documentation' },
+];
+
+const repo = 'https://github.com/PEI-RoamingApps/pei-roamingapps.github.io';
+const jira = '#'; 
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const url = (path: string) => `${base}${path === '/' ? '/' : path}`;
+const isActive = (path: string) => {
+  const target = url(path).replace(/\/$/, '') || '/';
+  return currentPath === target || (target !== '/' && currentPath.startsWith(`${target}/`));
+};
+---
+<header class="site-nav sticky top-0 z-50 border-b border-line bg-background/90 backdrop-blur-md">
+  <nav aria-label="Main" class="shell flex h-[4.5rem] items-center gap-14 md:h-24">
+    <a href={url('/')} class="text-2xl text-brand" aria-label="Roaming for Applications — home"><Logo /></a>
+
+    <div class="hidden flex-1 items-center gap-9 md:flex">
+      {links.map((link) => (
+        <a href={url(link.href)} aria-current={isActive(link.href) ? 'page' : undefined} class="nav-link relative py-2 text-sm">
+          {link.label}
+        </a>
+      ))}
+    </div>
+
+    <div class="ml-auto hidden text-brand md:block"><ThemeToggle /></div>
+
+    <div class="ml-4 hidden items-center gap-1 md:flex">
+      <a href={jira} rel="noopener noreferrer" target="_blank" aria-label="Jira — opens in a new tab" class="external-tool-link flex h-9 w-9 items-center justify-center text-brand transition-opacity duration-300 hover:opacity-70">
+        <svg viewBox="8 10 31 31" fill="currentColor" aria-hidden="true"><path d="M17.948 31.047h-2.705c-4.079 0-7.005-2.499-7.005-6.157H22.78c.754 0 1.242.535 1.242 1.294v14.634c-3.636 0-6.074-2.945-6.074-7.05v-2.721Zm7.182-7.273h-2.704c-4.08 0-7.006-2.453-7.006-6.112h14.543c.754 0 1.286.491 1.286 1.249v14.634c-3.636 0-6.119-2.944-6.119-7.049v-2.722Zm7.227-7.227h-2.704c-4.08 0-7.006-2.499-7.006-6.157H37.19c.754 0 1.242.535 1.242 1.249v14.634c-3.636 0-6.075-2.945-6.075-7.049v-2.677Z"/></svg>
+      </a>
+      <a href={repo} rel="noopener noreferrer" target="_blank" aria-label="GitHub — opens in a new tab" class="external-tool-link flex h-9 w-9 items-center justify-center text-brand transition-opacity duration-300 hover:opacity-70">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11.03 11.03 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.77.12 3.06.74.81 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5Z" /></svg>
+      </a>
+    </div>
+
+    <button type="button" id="nav-toggle" aria-expanded="false" aria-controls="nav-panel" class="ml-auto flex h-11 w-11 flex-col items-end justify-center gap-1.5 md:hidden">
+      <span class="sr-only">Menu</span><span class="nav-toggle-line block h-px w-6 bg-text" aria-hidden="true"></span><span class="nav-toggle-line block h-px w-4 bg-brand" aria-hidden="true"></span>
+    </button>
+  </nav>
+</header>
+
+<div id="nav-panel" hidden class="fixed inset-0 top-[4.5rem] z-40 flex flex-col bg-brand-deep pb-10 text-white md:hidden">
+    <div class="mobile-menu-inner shell flex flex-1 flex-col overflow-y-auto pt-10">
+      <p class="mobile-menu-label meta">Menu</p>
+      <div class="mt-6 flex flex-col">
+        {links.map((link) => (
+          <a href={url(link.href)} aria-current={isActive(link.href) ? 'page' : undefined} class="mobile-menu-link flex min-h-16 items-center border-b border-white/20 font-display text-4xl font-medium tracking-[-0.03em]">
+            {link.label}
+          </a>
+        ))}
+      </div>
+      <div class="mt-auto flex items-center gap-6 pt-10">
+        <div class="flex h-12 w-12 items-center justify-center border border-white/35 text-white"><ThemeToggle /></div>
+        <div class="flex items-center gap-1">
+          <a href={jira} rel="noopener noreferrer" target="_blank" aria-label="Jira — opens in a new tab" class="external-tool-link flex h-9 w-9 items-center justify-center text-white">
+            <svg viewBox="8 10 31 31" fill="currentColor" aria-hidden="true"><path d="M17.948 31.047h-2.705c-4.079 0-7.005-2.499-7.005-6.157H22.78c.754 0 1.242.535 1.242 1.294v14.634c-3.636 0-6.074-2.945-6.074-7.05v-2.721Zm7.182-7.273h-2.704c-4.08 0-7.006-2.453-7.006-6.112h14.543c.754 0 1.286.491 1.286 1.249v14.634c-3.636 0-6.119-2.944-6.119-7.049v-2.722Zm7.227-7.227h-2.704c-4.08 0-7.006-2.499-7.006-6.157H37.19c.754 0 1.242.535 1.242 1.249v14.634c-3.636 0-6.075-2.945-6.075-7.049v-2.677Z"/></svg>
+          </a>
+          <a href={repo} rel="noopener noreferrer" target="_blank" aria-label="GitHub — opens in a new tab" class="external-tool-link flex h-9 w-9 items-center justify-center border border-white/35">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11.03 11.03 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.77.12 3.06.74.81 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5Z" /></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<style>
+  .site-nav::before { content:''; position:absolute; inset:0 0 auto; height:4px; background:linear-gradient(90deg,var(--color-brand-deep) 0 36%,var(--color-signal) 36% 64%,var(--color-silver) 64% 100%); }
+  .nav-link::after { content:''; position:absolute; left:0; right:100%; bottom:-1px; height:2px; background:var(--color-brand); transition:right 260ms var(--ease-align); }
+  .nav-link:hover::after, .nav-link:focus-visible::after, .nav-link[aria-current]::after { right:0; }
+  .nav-link[aria-current] { color:var(--color-brand); }
+  .external-tool-link svg { width: 1.5rem; height: 1.5rem; }
+
+  #nav-panel {
+    opacity: 0;
+    transform: translateY(-0.75rem);
+    transition: opacity 320ms ease, transform 420ms var(--ease-align);
+  }
+  #nav-panel[data-open] { opacity: 1; transform: translateY(0); }
+  .mobile-menu-inner { transition: transform 420ms var(--ease-align); transform: translateY(-0.5rem); }
+  .mobile-menu-label { color: rgb(255 255 255 / 75%); }
+  #nav-panel[data-open] .mobile-menu-inner { transform: translateY(0); }
+  .mobile-menu-link {
+    opacity: 0;
+    transform: translateX(-1rem);
+    transition: opacity 280ms ease, transform 400ms var(--ease-align);
+  }
+  #nav-panel[data-open] .mobile-menu-link { opacity: 1; transform: translateX(0); }
+  #nav-panel[data-open] .mobile-menu-link:nth-child(1) { transition-delay: 60ms; }
+  #nav-panel[data-open] .mobile-menu-link:nth-child(2) { transition-delay: 95ms; }
+  #nav-panel[data-open] .mobile-menu-link:nth-child(3) { transition-delay: 130ms; }
+  #nav-panel[data-open] .mobile-menu-link:nth-child(4) { transition-delay: 165ms; }
+  #nav-panel[data-open] .mobile-menu-link:nth-child(5) { transition-delay: 200ms; }
+  .nav-toggle-line { transform-origin: right center; transition: transform 350ms var(--ease-align), width 350ms var(--ease-align), background-color 250ms ease; }
+  #nav-toggle[aria-expanded='true'] .nav-toggle-line:nth-of-type(2) { transform: translateY(3.75px) rotate(45deg); }
+  #nav-toggle[aria-expanded='true'] .nav-toggle-line:nth-of-type(3) { width: 1.5rem; transform: translateY(-3.75px) rotate(-45deg); }
+
+  @media (prefers-reduced-motion: reduce) {
+    #nav-panel, .mobile-menu-inner, .mobile-menu-link, .nav-toggle-line { transition: none; }
+  }
+</style>
+
+<script is:inline>
+  const toggle = document.getElementById('nav-toggle');
+  const panel = document.getElementById('nav-panel');
+  let closeTimer;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const openMenu = () => {
+    window.clearTimeout(closeTimer);
+    panel?.removeAttribute('hidden');
+    toggle?.setAttribute('aria-expanded', 'true');
+    requestAnimationFrame(() => requestAnimationFrame(() => panel?.setAttribute('data-open', '')));
+  };
+  const closeMenu = () => {
+    toggle?.setAttribute('aria-expanded', 'false');
+    panel?.removeAttribute('data-open');
+    window.clearTimeout(closeTimer);
+    closeTimer = window.setTimeout(() => panel?.setAttribute('hidden', ''), reducedMotion ? 0 : 420);
+  };
+  toggle?.addEventListener('click', () => toggle.getAttribute('aria-expanded') === 'true' ? closeMenu() : openMenu());
+  panel?.addEventListener('click', (event) => { if (event.target instanceof Element && event.target.closest('a')) closeMenu(); });
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') { closeMenu(); toggle.focus(); } });
+</script>

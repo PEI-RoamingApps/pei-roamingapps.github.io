@@ -1,0 +1,17 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../components/layouts/BaseLayout.astro';
+import PageHeader from '../../components/global/PageHeader.astro';
+import LogRow from '../../components/minutes/LogRow.astro';
+const minutes = (await getCollection('minutes')).sort((a,b) => b.data.index - a.data.index);
+---
+<BaseLayout title="Minutes" description="Meeting notes and project decisions for aLinha.">
+  <PageHeader label="Meeting record" title="Minutes" lead="Meeting notes and decisions. An entry can be available online, as PDF, or both." />
+  <section class="py-[var(--space-section)]">
+    <div class="shell">
+      <ul class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {minutes.map((entry) => <LogRow entry={entry} />)}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,25 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { url } from '../../lib/paths';
+interface Props { entry: CollectionEntry<'milestones'>; first?: boolean; last?: boolean; }
+const { entry, first = false, last = false } = Astro.props;
+const { number, title, status, summary } = entry.data;
+---
+<a href={url(`/milestones/${entry.id}`)} class:list={[
+  'milestone-row group relative grid gap-3 py-6 transition-colors hover:bg-brand/5 focus-visible:bg-brand/5 md:grid-cols-[90px_minmax(0,1fr)_minmax(240px,1.2fr)] md:items-center md:gap-7',
+  first ? 'border-t border-line' : 'border-t border-line',
+  last && 'border-b border-line',
+]}>
+  <div class="relative z-10 flex items-center gap-3">
+    <span class:list={['phase-node h-2.5 w-2.5 border border-brand bg-background transition-transform group-hover:scale-125 md:mx-auto', status !== 'planned' && 'bg-brand']} aria-hidden="true"></span>
+    <p class="font-mono text-xs font-medium tracking-[.1em] text-brand md:hidden">Phase {String(number).padStart(2,'0')}</p>
+    <span class="sr-only">Phase {String(number).padStart(2,'0')}</span>
+  </div>
+  <p class:list={['font-display text-xl font-semibold tracking-[-0.025em]', status === 'planned' && 'text-text-soft']}>{title}<span class="ml-2 inline-block text-brand transition-transform group-hover:translate-x-1" aria-hidden="true">↗</span></p>
+  <p class="text-sm leading-relaxed text-text-soft">{summary}</p>
+</a>
+
+<style>
+  .phase-node { box-shadow: 0 0 0 5px var(--color-background); }
+  .milestone-row:hover .phase-node, .milestone-row:focus-visible .phase-node { box-shadow: 0 0 0 5px var(--color-brand-soft); }
+</style>

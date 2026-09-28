@@ -1,0 +1,85 @@
+<button
+  type="button"
+  class="scroll-to-top"
+  aria-label="Back to top"
+  title="Back to top"
+  data-scroll-to-top
+>
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="m6.5 10.5 5.5-5 5.5 5M12 5.5V19" />
+  </svg>
+</button>
+
+<style>
+  .scroll-to-top {
+    position: fixed;
+    right: clamp(1rem, 0.65rem + 2vw, 2.5rem);
+    bottom: clamp(1rem, 0.65rem + 2vw, 2.5rem);
+    z-index: 40;
+    display: grid;
+    width: 3rem;
+    height: 3rem;
+    place-items: center;
+    color: var(--color-background);
+    background: var(--color-brand);
+    border: 1px solid var(--color-brand);
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(.75rem);
+    transition:
+      opacity 240ms var(--ease-align),
+      visibility 240ms var(--ease-align),
+      transform 240ms var(--ease-align),
+      color 180ms ease,
+      background-color 180ms ease;
+  }
+
+  .scroll-to-top[data-visible] {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .scroll-to-top:hover {
+    color: var(--color-text);
+    background: var(--color-signal);
+    border-color: var(--color-signal);
+  }
+
+  .scroll-to-top:focus-visible {
+    outline-color: var(--color-text);
+  }
+
+  .scroll-to-top svg {
+    width: 1.35rem;
+    height: 1.35rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-to-top { transition: none; }
+  }
+</style>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-scroll-to-top]');
+
+  if (button) {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updateVisibility = () => {
+      button.toggleAttribute('data-visible', window.scrollY > Math.min(window.innerHeight * .6, 480));
+    };
+
+    button.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+    });
+
+    window.addEventListener('scroll', updateVisibility, { passive: true });
+    updateVisibility();
+  }
+</script>

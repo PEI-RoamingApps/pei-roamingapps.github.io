@@ -1,0 +1,49 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { entry: CollectionEntry<'team'>; }
+const { entry } = Astro.props;
+const { name, initials, image, imageAlt, role, github, linkedin } = entry.data;
+---
+<li data-reveal class="group min-w-0">
+  <div class="relative aspect-[4/5] overflow-hidden border border-line bg-brand-soft">
+    {image ? (
+      <img src={image} alt={imageAlt ?? `Portrait of ${name}`} class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.015]" loading="lazy" />
+    ) : (
+      <div class="flex h-full w-full items-center justify-center" aria-hidden="true">
+        <span class="font-display text-[clamp(4rem,8vw,7rem)] font-semibold tracking-[-0.06em] text-brand/25">{initials}</span>
+      </div>
+    )}
+  </div>
+  <h2 class="mt-4 font-display text-[clamp(1.35rem,2vw,2rem)] font-semibold leading-tight tracking-[-0.035em]">{name}</h2>
+  <p class="meta mt-2">{role}</p>
+  {(github || linkedin) && <div class="mt-4 flex flex-wrap gap-2">
+    {github && (
+      <a
+        href={github}
+        rel="noopener noreferrer"
+        target="_blank"
+        aria-label={`${name} on GitHub — opens in a new tab`}
+        title="GitHub"
+        class="inline-flex size-10 items-center justify-center border border-line text-brand transition hover:border-brand hover:bg-brand hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+      >
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="size-5" fill="currentColor">
+          <path d="M12 .7a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2.23c-3.23.7-3.91-1.37-3.91-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.17.08 1.78 1.2 1.78 1.2 1.04 1.77 2.72 1.26 3.38.96.1-.75.4-1.26.74-1.55-2.58-.29-5.29-1.29-5.29-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.16 1.18a10.94 10.94 0 0 1 5.75 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.72 5.38-5.3 5.67.42.36.79 1.06.79 2.14v3.18c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z" />
+        </svg>
+      </a>
+    )}
+    {linkedin && (
+      <a
+        href={linkedin}
+        rel="noopener noreferrer"
+        target="_blank"
+        aria-label={`${name} on LinkedIn — opens in a new tab`}
+        title="LinkedIn"
+        class="inline-flex size-10 items-center justify-center border border-line text-brand transition hover:border-brand hover:bg-brand hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+      >
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="size-5" fill="currentColor">
+          <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V8.98h3.42v1.57h.05c.47-.9 1.64-1.85 3.37-1.85 3.61 0 4.27 2.37 4.27 5.46v6.29ZM5.32 7.41a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13Zm1.78 13.04H3.54V8.98H7.1v11.47ZM22.23 0H1.77A1.75 1.75 0 0 0 0 1.73v20.54A1.75 1.75 0 0 0 1.77 24h20.46A1.75 1.75 0 0 0 24 22.27V1.73A1.75 1.75 0 0 0 22.23 0Z" />
+        </svg>
+      </a>
+    )}
+  </div>}
+</li>

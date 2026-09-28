@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../components/layouts/BaseLayout.astro';
+import PageHeader from '../../components/global/PageHeader.astro';
+import MilestoneRow from '../../components/milestones/MilestonesRow.astro';
+const milestones = (await getCollection('milestones')).sort((a,b) => a.data.number - b.data.number);
+---
+<BaseLayout title="Milestones" description="Published milestones for the aLinha project.">
+  <PageHeader label="Project progress" title="Milestones" lead="Milestones and deliverables confirmed by the project team." />
+  <section class="py-[var(--space-section)]">
+    <div class="shell">
+      <div class="mb-5 hidden grid-cols-[90px_minmax(0,1fr)_minmax(240px,1.2fr)] gap-7 px-0 md:grid">
+        <span class="meta">Phase</span><span class="meta">Milestone</span><span class="meta">Outcome</span>
+      </div>
+      <div class="milestone-axis">
+        {milestones.map((entry, i) => <MilestoneRow entry={entry} first={i===0} last={i===milestones.length-1} />)}
+      </div>
+
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .milestone-axis { position: relative; }
+  @media (min-width: 768px) {
+    .milestone-axis::before {
+      content: '';
+      position: absolute;
+      inset: 0 auto 0 2.75rem;
+      width: 1px;
+      background: var(--color-line);
+      pointer-events: none;
+    }
+  }
+</style>

@@ -1,0 +1,41 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../components/layouts/BaseLayout.astro';
+import { url } from '../../lib/paths';
+
+export const getStaticPaths = (async () => {
+  const minutes = await getCollection('minutes', ({ data }) => !data.scheduled);
+  return minutes.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { index, date, subject, attendees, mode, pdf } = entry.data;
+const { Content } = await render(entry);
+const formatted = date.toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
+const pdfHref = pdf ? (pdf.startsWith('http') ? pdf : url(pdf)) : undefined;
+const showWebContent = mode !== 'pdf';
+---
+<BaseLayout title={`#${String(index).padStart(2,'0')} — ${subject}`} description={`Meeting minute #${String(index).padStart(2,'0')}: ${subject}.`}>
+  <section class="py-12 md:py-16">
+    <div class="shell grid gap-10 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-14">
+      <aside>
+        <a href={url('/minutes')} class="axis-link text-sm font-medium text-brand">← Minutes</a>
+        <p class="meta mt-8 text-signal">#{String(index).padStart(2,'0')}</p>
+        <p class="mt-3 text-sm text-text-soft">{formatted}</p>
+        {attendees.length > 0 && <div class="mt-8"><p class="meta">Attendees</p><p class="mt-3 text-sm leading-relaxed text-text-soft">{attendees.join(' · ')}</p></div>}
+      </aside>
+
+      <div>
+        <h1 data-reveal class="max-w-4xl font-display font-semibold tracking-[-0.055em]" style="font-size:var(--text-title);line-height:.96">{subject}</h1>
+
+        {pdfHref && <div class="mt-8 flex flex-col gap-4 border border-signal/35 bg-signal-soft p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div><p class="font-medium">PDF version</p><p class="mt-1 text-sm text-text-soft">Original meeting document available alongside this entry.</p></div>
+          <div class="flex gap-3"><a href={pdfHref} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center border border-brand bg-brand px-4 text-sm font-medium text-white">Open PDF ↗</a><a href={pdfHref} download class="inline-flex min-h-11 items-center border border-brand px-4 text-sm font-medium text-brand">Download ↓</a></div>
+        </div>}
+
+        {showWebContent ? <article class="prose-alinha mt-10 max-w-3xl text-base leading-[1.7] text-text-soft"><Content /></article> : <p class="mt-10 max-w-2xl text-base leading-relaxed text-text-soft">This minute is stored as a PDF. Use the PDF action above to read the original document.</p>}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

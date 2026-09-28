@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../components/layouts/BaseLayout.astro';
+import PageHeader from '../components/global/PageHeader.astro';
+import TeamRow from '../components/team/TeamRow.astro';
+
+const people = (await getCollection('team')).sort((a,b) => a.data.order - b.data.order);
+const students = people.filter((p) => p.data.group === 'student');
+const supervision = [
+  { label: 'Advisors', entries: people.filter((p) => p.data.group === 'advisor') },
+  { label: 'Collaborators', entries: people.filter((p) => p.data.group === 'collaborator') },
+].filter((section) => section.entries.length > 0);
+---
+<BaseLayout title="Team" description="The students, advisors and collaborators behind aLinha.">
+  <PageHeader label="People" title="Team" lead="The students building aLinha, supported by the project advisors and collaborators." />
+
+  <section class="py-[var(--space-section)]">
+    <div class="shell">
+      <div class="grid gap-4 md:grid-cols-[200px_minmax(0,1fr)] md:gap-12">
+        <p class="meta text-signal">Students · {String(students.length).padStart(2,'0')}</p>
+        <h2 class="font-display font-semibold tracking-[-0.04em]" style="font-size:var(--text-section);line-height:1.05">The project team.</h2>
+      </div>
+
+      <ul class="mt-10 grid min-w-0 grid-cols-1 gap-x-5 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        {students.map((entry) => <TeamRow entry={entry} />)}
+      </ul>
+
+      <div class="mt-20 grid gap-14 md:grid-cols-2 md:gap-20">
+        {supervision.map((section) => (
+          <section aria-labelledby={`${section.label.toLowerCase()}-heading`}>
+            <h2 id={`${section.label.toLowerCase()}-heading`} class="font-display text-xl font-semibold tracking-[-0.025em]">{section.label}</h2>
+            <ul class="mt-4 border-t border-line">
+              {section.entries.map(({ data }) => (
+                <li data-reveal class="border-b border-line py-5">
+                  <p class="font-display text-xl font-semibold tracking-[-0.025em]">{data.name}</p>
+                  <p class="meta mt-2">{data.role}{data.affiliation ? ` · ${data.affiliation}` : ''}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

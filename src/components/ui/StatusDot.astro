@@ -1,0 +1,19 @@
+---
+interface Props {
+    status: 'planned' | 'in-progress' | 'done';
+    label?: boolean;
+}
+const { status, label = true } = Astro.props;
+const filled = status !== 'planned';
+const text = { planned: 'Planned', 'in-progress': 'In progress', done: 'Done' }[status];
+---
+<span class="flex items-center gap-2">
+  <span
+          class:list={[
+              'block h-1.5 w-3',
+              status === 'done' ? 'bg-brand' : filled ? 'bg-signal' : 'border border-muted',
+          ]}
+          aria-hidden="true"
+  ></span>
+    {label && <span class:list={['meta', filled && 'meta-on', status === 'done' && 'text-brand']}>{text}</span>}
+</span>

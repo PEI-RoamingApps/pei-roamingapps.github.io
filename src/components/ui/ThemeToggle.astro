@@ -1,0 +1,147 @@
+<button type="button" class="theme-toggle" aria-label="Switch to dark mode" title="Switch to dark mode">
+  <svg viewBox="0 0 28 28" width="26" height="26" aria-hidden="true">
+    <g class="theme-icon theme-icon--moon">
+      <path d="M21.25 17.35A8.6 8.6 0 0 1 10.65 6.75a8.6 8.6 0 1 0 10.6 10.6Z" />
+    </g>
+    <g class="theme-icon theme-icon--sun">
+      <circle class="sun-core" cx="14" cy="14" r="5.25" />
+      <g class="sun-rays">
+        <circle cx="14" cy="3.5" r="1.25" />
+        <circle cx="21.4" cy="6.6" r="1.25" />
+        <circle cx="24.5" cy="14" r="1.25" />
+        <circle cx="21.4" cy="21.4" r="1.25" />
+        <circle cx="14" cy="24.5" r="1.25" />
+        <circle cx="6.6" cy="21.4" r="1.25" />
+        <circle cx="3.5" cy="14" r="1.25" />
+        <circle cx="6.6" cy="6.6" r="1.25" />
+      </g>
+    </g>
+  </svg>
+</button>
+
+<style>
+  .theme-toggle {
+    display: flex;
+    width: 2.5rem;
+    height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+    user-select: none;
+    color: currentColor;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    transition: background-color 220ms ease, border-color 220ms ease;
+  }
+
+  .theme-toggle:hover {
+    background: var(--color-signal-soft);
+    border-color: var(--color-line-soft);
+  }
+
+  .theme-toggle:active svg {
+    transform: scale(.88);
+  }
+
+  .theme-toggle svg {
+    overflow: visible;
+    transition: transform 260ms var(--ease-align);
+  }
+
+  .theme-icon {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: opacity 260ms ease, transform 420ms var(--ease-align);
+  }
+
+  .theme-icon--moon {
+    fill: currentColor;
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+
+  .theme-icon--sun {
+    opacity: 0;
+    transform: rotate(-45deg) scale(.65);
+  }
+
+  .sun-core { fill: var(--color-signal); }
+  .sun-rays { fill: currentColor; opacity: .78; }
+
+  :global(:root[data-theme='dark']) .theme-icon--moon {
+    opacity: 0;
+    transform: rotate(45deg) scale(.65);
+  }
+
+  :global(:root[data-theme='dark']) .theme-icon--sun {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .theme-toggle,
+    .theme-toggle svg,
+    .theme-icon { transition: none; }
+  }
+</style>
+
+<script>
+  const setupThemeToggle = (button: HTMLButtonElement) => {
+    if (button.dataset.ready) return;
+    button.dataset.ready = 'true';
+
+    const sync = () => {
+      const dark = document.documentElement.dataset.theme === 'dark';
+      const label = dark ? 'Switch to light mode' : 'Switch to dark mode';
+      button.setAttribute('aria-label', label);
+      button.title = label;
+    };
+
+    const changeTheme = (x: number, y: number) => {
+      const root = document.documentElement;
+      if (root.dataset.themeTransitioning !== undefined) return;
+
+      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      root.style.setProperty('--reveal-x', `${x}px`);
+      root.style.setProperty('--reveal-y', `${y}px`);
+
+      const apply = () => {
+        root.dataset.theme = next;
+        localStorage.setItem('theme', next);
+        document.querySelectorAll<HTMLButtonElement>('.theme-toggle').forEach((item) => {
+          const label = next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+          item.setAttribute('aria-label', label);
+          item.title = label;
+        });
+      };
+
+      if (document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        root.dataset.themeTransitioning = '';
+        try {
+          const transition = document.startViewTransition(apply);
+          const clear = () => delete root.dataset.themeTransitioning;
+          transition.finished.finally(clear);
+          setTimeout(clear, 1000);
+        } catch {
+          delete root.dataset.themeTransitioning;
+          apply();
+        }
+      } else {
+        apply();
+      }
+    };
+
+    button.addEventListener('click', (event) => {
+      changeTheme(
+        event.clientX || button.getBoundingClientRect().left + button.offsetWidth / 2,
+        event.clientY || button.getBoundingClientRect().top + button.offsetHeight / 2,
+      );
+    });
+
+    sync();
+  };
+
+  document.querySelectorAll<HTMLButtonElement>('.theme-toggle').forEach(setupThemeToggle);
+</script>

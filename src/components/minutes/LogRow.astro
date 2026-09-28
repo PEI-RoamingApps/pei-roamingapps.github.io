@@ -1,0 +1,23 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { url } from '../../lib/paths';
+interface Props { entry: CollectionEntry<'minutes'>; }
+const { entry } = Astro.props;
+const { index, date, subject, summary, scheduled, mode, pdf } = entry.data;
+const formatted = date.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+const detailHref = url(`/minutes/${entry.id}`);
+const pdfHref = pdf ? (pdf.startsWith('http') ? pdf : url(pdf)) : undefined;
+const canRead = !scheduled && mode !== 'pdf';
+const canOpenPdf = !scheduled && Boolean(pdfHref);
+---
+<li data-reveal class="flex min-h-[220px] flex-col border border-line bg-surface p-6">
+  <p class="meta text-signal">#{String(index).padStart(2,'0')} · {formatted}</p>
+  <h2 class:list={['mt-6 font-display text-xl font-semibold tracking-[-0.03em]', scheduled && 'text-muted']}>{subject}</h2>
+  {summary && <p class="mt-3 text-sm leading-relaxed text-text-soft">{summary}</p>}
+  <div class="mt-auto flex flex-wrap gap-x-5 gap-y-2 pt-7">
+    {scheduled && <span class="meta">Scheduled</span>}
+    {!scheduled && canRead && <a href={detailHref} class="axis-link text-sm font-medium text-brand">View online →</a>}
+    {!scheduled && canOpenPdf && <a href={pdfHref} target="_blank" rel="noopener noreferrer" class="axis-link text-sm font-medium text-brand">PDF ↗</a>}
+    {!scheduled && mode === 'pdf' && !canOpenPdf && <span class="meta">PDF pending</span>}
+  </div>
+</li>

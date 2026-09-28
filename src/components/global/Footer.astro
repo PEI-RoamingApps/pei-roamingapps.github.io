@@ -1,0 +1,213 @@
+---
+import Logo from '../ui/Logo.astro';
+import { url } from '../../lib/paths';
+
+const currentYear = new Date().getFullYear();
+const advisors = ['João Almeida', 'Daniel Ferreira'];
+const secondaryLinks = [
+    { label: 'Milestones', href: '/milestones' },
+    { label: 'Minutes', href: '/minutes' },
+    { label: 'Documentation', href: '/documentation' },
+];
+
+const aettua = {
+    name: 'AETTUA — Associação de Eletrónica, Telecomunicações e Telemática da UA',
+    src: '/images/logos/aettua.png',
+    width: 486,
+    href: 'https://aettua.pt',
+};
+
+const institutionalSupporters = [
+    { name: 'Universidade de Aveiro', src: '/images/logos/ua.png', width: 345, href: 'https://www.ua.pt' },
+    { name: 'IEETA', src: '/images/logos/ieeta.png', width: 287, href: 'https://www.ieeta.pt' },
+    { name: 'LASI — Laboratório Associado de Sistemas Inteligentes', src: '/images/logos/lasi.png', width: 192 },
+];
+---
+
+<footer
+        class="footer-panel relative mt-auto overflow-hidden border-t border-line"
+>
+    <div class="supporter-strip border-b border-line">
+        <div class="supporter-strip__inner shell">
+            <a
+                    href={aettua.href}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    class="supporter-strip__aettua"
+            >
+                <img
+                        src={url(aettua.src)}
+                        alt={aettua.name}
+                        width={aettua.width}
+                        height="128"
+                        loading="lazy"
+                />
+            </a>
+            <ul class="supporter-strip__institutions">
+            {
+                institutionalSupporters.map((s) => {
+                    const Tag = s.href ? 'a' : 'span';
+                    return (
+                        <li>
+                            <Tag
+                                    href={s.href}
+                                    rel={s.href ? 'noopener noreferrer' : undefined}
+                                    target={s.href ? '_blank' : undefined}
+                                    class="supporter-logo"
+                            >
+                                <img
+                                        src={url(s.src)}
+                                        alt={s.name}
+                                        width={s.width}
+                                        height="128"
+                                        loading="lazy"
+                                />
+                            </Tag>
+                        </li>
+                    );
+                })
+            }
+            </ul>
+        </div>
+    </div>
+    <div class="shell relative grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.4fr)_1fr_1fr_1fr] lg:gap-16">
+        <div>
+            <Logo class="max-w-[15rem] text-xl text-brand md:text-2xl" />
+            <p class="meta mt-2.5">Roaming for Applications</p>
+        </div>
+        <div>
+            <p class="meta meta-on">Universidade de Aveiro</p>
+            <p class="meta mt-2">DETI · Projeto em Engenharia Informática</p>
+            <p class="meta mt-2">2026/2027</p>
+        </div>
+        <div>
+            <p class="meta meta-on">Advisors</p>
+            {advisors.map((name) => <p class="meta mt-2">{name}</p>)}
+        </div>
+        <div class="flex flex-col items-start gap-2.5">
+            {secondaryLinks.map((link) => (
+                <a href={url(link.href)} class="axis-link meta">{link.label}</a>
+            ))}
+        </div>
+    </div>
+    <div class="shell relative border-t border-line py-5">
+        <p class="meta">© {currentYear} Roaming for Applications. All rights reserved.</p>
+    </div>
+</footer>
+
+<style>
+    .footer-panel {
+        background-color: var(--color-brand-soft);
+    }
+
+    .footer-panel > .shell {
+        position: relative;
+        isolation: isolate;
+    }
+
+    .footer-panel > .shell::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 100vw;
+        transform: translateX(-50%);
+        background-color: var(--color-background);
+        opacity: 0.55;
+        z-index: -1;
+    }
+
+    .supporter-strip {
+        position: relative;
+        isolation: isolate;
+        background: var(--color-background);
+    }
+
+    .supporter-strip::before {
+        content: '';
+        position: absolute;
+        inset: 0 0 auto;
+        height: 4px;
+        background: linear-gradient(to right, var(--color-brand-deep) 0 36%, var(--color-signal) 36% 64%, var(--color-silver) 64% 100%);
+    }
+
+    .supporter-strip__inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        min-height: 132px;
+        padding-block: 1.5rem;
+    }
+
+    .supporter-strip__aettua {
+        display: flex;
+        justify-content: center;
+        padding-inline: 2rem;
+        opacity: 0.9;
+        transition: opacity 300ms;
+    }
+
+    .supporter-strip__aettua:hover,
+    .supporter-logo:hover {
+        opacity: 1;
+    }
+
+    .supporter-strip__aettua img {
+        width: auto;
+        height: clamp(2.5rem, 4.4vw, 4rem);
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .supporter-strip__institutions {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        gap: clamp(0.75rem, 2vw, 2.5rem);
+        padding-inline: clamp(0.75rem, 2vw, 2rem);
+    }
+
+    .supporter-strip__institutions li {
+        display: flex;
+        min-width: 0;
+        justify-content: center;
+    }
+
+    .supporter-logo {
+        display: block;
+        opacity: 0.85;
+        transition: opacity 300ms;
+    }
+
+    .supporter-logo img {
+        width: auto;
+        height: clamp(2rem, 3.2vw, 3.25rem);
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    @media (max-width: 767px) {
+        .supporter-strip__inner {
+            min-height: 96px;
+            padding-block: 1rem;
+        }
+
+        .supporter-strip__aettua {
+            padding-inline: 0.5rem;
+        }
+
+        .supporter-strip__aettua img {
+            height: clamp(1.75rem, 7vw, 2.75rem);
+        }
+
+        .supporter-strip__institutions {
+            gap: 0.5rem;
+            padding-inline: 0.5rem;
+        }
+
+        .supporter-logo img {
+            height: clamp(1.5rem, 6vw, 2.25rem);
+        }
+    }
+</style>

@@ -1,0 +1,25 @@
+---
+interface Props {
+    href: string;
+    external?: boolean
+    mono?: boolean
+    class?: string
+}
+
+const { href, external = false, mono = false, class: className = '' } = Astro.props;
+const rel = external ? 'noopener noreferrer' : undefined;
+const target = external ? '_blank' : undefined;
+---
+
+<a
+    href={href}
+    rel={rel}
+    target={target}
+    class:list={[
+        'axis-link inline-flex min-h-11 items-center font-medium',
+        mono ? 'meta meta-on' : 'text-base',
+        className,
+    ]}
+    >
+    <slot /> {external ? '↗' : '→'}
+</a>

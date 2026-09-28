@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import LinkArrow from '../ui/LinkArrow.astro';
+import { url } from '../../lib/paths';
+
+const milestones = (await getCollection('milestones')).sort((a,b) => a.data.number - b.data.number);
+const current = milestones.find((m) => m.data.status === 'in-progress') ?? milestones.find((m) => m.data.status === 'planned') ?? milestones.at(-1);
+---
+<section aria-labelledby="home-progress-heading" class="py-[var(--space-section)]">
+  <div class="shell">
+    <div class="progress-card grid items-center gap-7 border border-brand/20 bg-brand-soft/55 p-7 md:grid-cols-[250px_minmax(0,1fr)_auto] md:gap-10 md:p-10">
+      <div>
+        <p class="meta text-signal">Current milestone</p>
+        <h2 id="home-progress-heading" class="mt-2 font-display text-2xl font-semibold tracking-[-0.03em]">{current?.data.title}</h2>
+      </div>
+      <p class="max-w-2xl text-base leading-relaxed text-text-soft">{current?.data.summary}</p>
+      <LinkArrow href={url('/milestones')}>View milestones</LinkArrow>
+    </div>
+  </div>
+</section>
+
+<style>
+  .progress-card { position:relative; box-shadow:10px 10px 0 var(--color-silver-soft); }
+  .progress-card::before { content:''; position:absolute; inset:0 auto 0 0; width:5px; background:linear-gradient(var(--color-brand),var(--color-signal)); }
+</style>
