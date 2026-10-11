@@ -1,15 +1,15 @@
 ---
 number: 2
 title: Elaboration
-status: Done
+status: done
 summary: Architecture, User cases, Personas, etc
 deliverables:
   - title: "Apresentação da Milestone 2 (PDF)"
-    status: Done
+    status: done
   - title: Arquitetura detalhada e fluxos de interação 
     status: Done
   - title: Use cases
-    status: Done
+    status: done
 start: 2026-10-01
 end: 2026-10-11
 ---
