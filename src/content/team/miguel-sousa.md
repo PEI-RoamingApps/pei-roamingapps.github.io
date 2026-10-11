@@ -2,6 +2,6 @@
 name: Miguel Sousa
 group: student
 initials: MS
-role: Team member
+role: Architect
 order: 4
 ---

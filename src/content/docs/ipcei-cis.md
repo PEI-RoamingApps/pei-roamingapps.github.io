@@ -1,8 +1,8 @@
 ---
-title: IPCEI-CIS Reference Architecture (ICRA)
+title: IPCEI-CIS Reference Architecture (ICRA v3.0)
 category: research
 state: Reference
-format: LINK
+format: PDF
 order: 2
-href: https://www.ipcei-cis.eu/
+href: /documents/IPCEI-CIS_Reference-Architecture_3-0.pdf
 ---

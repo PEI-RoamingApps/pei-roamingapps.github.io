@@ -2,6 +2,6 @@
 name: João Ribeiro
 group: student
 initials: JR
-role: Team member
+role: Product Owner
 order: 2
 ---

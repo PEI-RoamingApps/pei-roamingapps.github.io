@@ -2,6 +2,6 @@
 name: Rodrigo Sampaio
 group: student
 initials: RS
-role: Team member
+role: Team Manager
 order: 5
 ---

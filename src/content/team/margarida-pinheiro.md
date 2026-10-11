@@ -2,6 +2,6 @@
 name: Margarida Pinheiro
 group: student
 initials: MP
-role: Team member
+role: DevOps
 order: 3
 ---
